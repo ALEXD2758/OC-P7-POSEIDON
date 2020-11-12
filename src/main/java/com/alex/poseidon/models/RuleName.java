@@ -8,12 +8,20 @@ import java.sql.Timestamp;
 @Table(name = "rulename")
 public class RuleName {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "name")
     String name;
+    @Column(name = "description")
     String description;
+    @Column(name = "json")
     String json;
+    @Column(name = "template")
     String template;
+    @Column(name = "sqlStr")
     String sqlStr;
+    @Column(name = "sqlPart")
     String sqlPart;
 
     public Integer getId() {

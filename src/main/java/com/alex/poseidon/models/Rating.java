@@ -9,10 +9,16 @@ import java.sql.Timestamp;
 @Table(name = "rating")
 public class Rating {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "moodysRating")
     String moodysRating;
+    @Column(name = "sandPRating")
     String sandPRating;
+    @Column(name = "fitchRating")
     String fitchRating;
+    @Column(name = "orderNumber")
     Integer orderNumber;
 
     public Integer getId() {

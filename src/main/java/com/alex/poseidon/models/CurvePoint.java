@@ -12,11 +12,18 @@ import java.sql.Timestamp;
 @Table(name = "curvepoint")
 public class CurvePoint {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "curveId")
     Integer curveId;
+    @Column(name = "asOfDate")
     Timestamp asOfDate;
+    @Column(name = "term")
     Double term;
+    @Column(name = "value")
     Double value;
+    @Column(name = "creationDate")
     Timestamp creationDate;
 
     public Integer getId() {
