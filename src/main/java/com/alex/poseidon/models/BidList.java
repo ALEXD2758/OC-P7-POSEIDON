@@ -58,7 +58,6 @@ public class BidList {
     @Column(name = "side")
     String side;
 
-
    /* public BidList(Integer bidListId, String account, String type, Double bidQuantity,
                    Double askQuantity, Double bid, Double ask, String benchmark,
                    Timestamp bidListDate, String commentary, String security, String status,
