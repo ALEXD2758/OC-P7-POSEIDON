@@ -1,5 +1,6 @@
 package com.alex.poseidon.controllers;
 
+import com.alex.poseidon.interfaces.TradeControllerInterface;
 import com.alex.poseidon.models.Trade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-public class TradeController {
+public class TradeController implements TradeControllerInterface {
     // TODO: Inject Trade service
 
+    @Override
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
@@ -22,30 +24,35 @@ public class TradeController {
         return "trade/list";
     }
 
+    @Override
     @GetMapping("/trade/add")
     public String addUser(Trade bid) {
         return "trade/add";
     }
 
+    @Override
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Trade list
         return "trade/add";
     }
 
+    @Override
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         // TODO: get Trade by Id and to model then show to the form
         return "trade/update";
     }
 
+    @Override
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
-                             BindingResult result, Model model) {
+                              BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Trade and return Trade list
         return "redirect:/trade/list";
     }
 
+    @Override
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Trade by Id and delete the Trade, return to Trade list

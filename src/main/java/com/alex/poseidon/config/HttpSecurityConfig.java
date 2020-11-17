@@ -25,9 +25,7 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring()
-                .antMatchers("/css/**", "/fontsLog/**",
-                        "/imagesLog/**", "/jsLog/**", "/vendorLog/**",
-                        "/img/**", "/js/**", "/vendor/**");
+                .antMatchers("/css/**");
     }
 
     //Function configuring the HttpSecurity, the different permissions and defaultUrl

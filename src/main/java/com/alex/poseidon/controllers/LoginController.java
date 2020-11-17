@@ -1,5 +1,6 @@
 package com.alex.poseidon.controllers;
 
+import com.alex.poseidon.interfaces.LoginControllerInterface;
 import com.alex.poseidon.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,11 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("app")
-public class LoginController {
+public class LoginController implements LoginControllerInterface {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     @GetMapping("login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView();
@@ -21,6 +23,7 @@ public class LoginController {
         return mav;
     }
 
+    @Override
     @GetMapping("secure/article-details")
     public ModelAndView getAllUserArticles() {
         ModelAndView mav = new ModelAndView();
@@ -29,6 +32,7 @@ public class LoginController {
         return mav;
     }
 
+    @Override
     @GetMapping("error")
     public ModelAndView error() {
         ModelAndView mav = new ModelAndView();

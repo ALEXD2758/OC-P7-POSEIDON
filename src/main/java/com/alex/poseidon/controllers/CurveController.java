@@ -1,5 +1,6 @@
 package com.alex.poseidon.controllers;
 
+import com.alex.poseidon.interfaces.CurveControllerInterface;
 import com.alex.poseidon.models.CurvePoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-public class CurveController {
+public class CurveController implements CurveControllerInterface {
     // TODO: Inject Curve Point service
 
+    @Override
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
@@ -22,30 +24,35 @@ public class CurveController {
         return "curvePoint/list";
     }
 
+    @Override
     @GetMapping("/curvePoint/add")
     public String addBidForm(CurvePoint bid) {
         return "curvePoint/add";
     }
 
+    @Override
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Curve list
         return "curvePoint/add";
     }
 
+    @Override
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         // TODO: get CurvePoint by Id and to model then show to the form
         return "curvePoint/update";
     }
 
+    @Override
     @PostMapping("/curvePoint/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                             BindingResult result, Model model) {
+                            BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Curve and return Curve list
         return "redirect:/curvePoint/list";
     }
 
+    @Override
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Curve by Id and delete the Curve, return to Curve list
