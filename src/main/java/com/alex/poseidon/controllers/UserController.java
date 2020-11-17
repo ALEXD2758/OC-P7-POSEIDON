@@ -5,6 +5,7 @@ import com.alex.poseidon.models.User;
 import com.alex.poseidon.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +39,7 @@ public class UserController implements UserControllerInterface {
     @PostMapping("/user/validate")
     public String validate(@Valid User user, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            Pbkdf2PasswordEncoder encoder = new Pbkdf2PasswordEncoder();
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
             model.addAttribute("users", userRepository.findAll());
@@ -64,7 +65,7 @@ public class UserController implements UserControllerInterface {
             return "user/update";
         }
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Pbkdf2PasswordEncoder encoder = new Pbkdf2PasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         user.setId(id);
         userRepository.save(user);
