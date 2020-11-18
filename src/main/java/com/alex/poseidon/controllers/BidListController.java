@@ -2,6 +2,8 @@ package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.BidListControllerInterface;
 import com.alex.poseidon.models.BidListModel;
+import com.alex.poseidon.models.UserModel;
+import com.alex.poseidon.repositories.BidListRepository;
 import com.alex.poseidon.services.BidListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -39,35 +41,49 @@ public class BidListController implements BidListControllerInterface {
     @Override
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidListModel bid, BindingResult result, Model model) {
+
         if (!result.hasErrors()) {
             bidListService.saveBid(bid);
             model.addAttribute("successMessage", "Your Bid was successfully added to the list");
             model.addAttribute("bidList", bidListService.getAllBids());
             return "redirect:/bidList/list";
         }
-        // TODO: check data valid and save to db, after saving return bid list
         return "bidList/add";
     }
 
     @Override
     @GetMapping("/bidList/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Bid by Id and to model then show to the form
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        try {
+            BidListModel bidList = bidListService.getBidByBidListId(id);
+            model.addAttribute("bidList", bidList);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid bidlist Id" + id);
+        }
         return "bidList/update";
     }
 
     @Override
     @PostMapping("/bidList/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid BidListModel bidList,
+    public String updateBid(@PathVariable("id") int id, @Valid BidListModel bidList,
                             BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Bid and return list Bid
+        if (result.hasErrors()) {
+            return "/bidList/list";
+        }
+        bidListService.saveBid(bidList);
+        model.addAttribute("bidList", bidListService.getAllBids());
         return "redirect:/bidList/list";
     }
 
     @Override
     @GetMapping("/bidList/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Bid by Id and delete the bid, return to Bid list
+    public String deleteBid(@PathVariable("id") int id, Model model) {
+        try {
+            bidListService.deleteBidById(id);
+            model.addAttribute("bidList", bidListService.getAllBids());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid bidlist Id" + id);
+        }
         return "redirect:/bidList/list";
     }
 }

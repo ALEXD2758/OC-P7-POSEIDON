@@ -17,7 +17,7 @@ public class BidListService {
         this.bidListRep = bidListRep;
     }
 
-    public boolean checkIfBidListIdExists(Integer bidListId) {
+    public boolean checkIfBidListIdExists(int bidListId) {
         return bidListRep.existsById(bidListId);
     }
     
@@ -29,11 +29,11 @@ public class BidListService {
         bidListRep.save(bidList);
     }
 
-    public void deleteBidById(Integer bidListId) {
+    public void deleteBidById(int bidListId) {
         bidListRep.deleteById(bidListId);
     }
 
-    public void getBidByBidListId(Integer bidListId) {
-        bidListRep.findByBidListId(bidListId);
-        }
+    public BidListModel getBidByBidListId(int bidListId) {
+        return bidListRep.findByBidListId(bidListId);
+    }
 }

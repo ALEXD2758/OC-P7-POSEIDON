@@ -21,12 +21,12 @@ public interface BidListControllerInterface {
     String validate(@Valid BidListModel bid, BindingResult result, Model model);
 
     @GetMapping("/bidList/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/bidList/update/{id}")
-    String updateBid(@PathVariable("id") Integer id, @Valid BidListModel bidList,
+    String updateBid(@PathVariable("id") int id, @Valid BidListModel bidList,
                      BindingResult result, Model model);
 
     @GetMapping("/bidList/delete/{id}")
-    String deleteBid(@PathVariable("id") Integer id, Model model);
+    String deleteBid(@PathVariable("id") int id, Model model);
 }

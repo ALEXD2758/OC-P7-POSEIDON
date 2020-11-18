@@ -46,11 +46,9 @@
 				<td><span th:text="${bidlistmodel.account}"> N/A </span></td>
 				<td><span th:text="${bidlistmodel.type}"> N/A </span></td>
 				<td><span th:text="${bidlistmodel.bidQuantity}"> N/A </span></td>
-				<td>
-					<form th:action="@{/empDelete}" th:object="${emp2}" method="post">
-					<input type="hidden" name="id" th:value="${bidListId}">
-					<button type="submit">Delete</button>
-				</form>
+				<td style="width: 15%" class="text-center">
+					<a th:href="@{/bidList/update/{id}(id=${bidlistmodel.bidListId})}">Edit</a>&nbsp;|&nbsp;
+					<a th:href="@{/bidList/delete/{id}(id=${bidlistmodel.bidListId})}">Delete</a>
 				</td>
 			</tr>
 			</tbody>
