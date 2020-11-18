@@ -1,6 +1,6 @@
 package com.alex.poseidon.interfaces;
 
-import com.alex.poseidon.models.Rating;
+import com.alex.poseidon.models.RatingModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,16 @@ public interface RatingControllerInterface {
     String home(Model model);
 
     @GetMapping("/rating/add")
-    String addRatingForm(Rating rating);
+    String addRatingForm(RatingModel rating);
 
     @PostMapping("/rating/validate")
-    String validate(@Valid Rating rating, BindingResult result, Model model);
+    String validate(@Valid RatingModel rating, BindingResult result, Model model);
 
     @GetMapping("/rating/update/{id}")
     String showUpdateForm(@PathVariable("id") Integer id, Model model);
 
     @PostMapping("/rating/update/{id}")
-    String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
+    String updateRating(@PathVariable("id") Integer id, @Valid RatingModel rating,
                         BindingResult result, Model model);
 
     @GetMapping("/rating/delete/{id}")

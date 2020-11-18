@@ -37,7 +37,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- TODO: Show all Bids to the table, the Action column will have Edit & Delete buttons -->
+			<tr th:if="${bidList.empty}">
+				<td colspan="2"> No bid available </td>
+			</tr>
+			<tr th:each="bidlistmodel : ${bidList}">
+
+				<td><span th:text="${bidlistmodel.bidListId}"> N/A </span></td>
+				<td><span th:text="${bidlistmodel.account}"> N/A </span></td>
+				<td><span th:text="${bidlistmodel.type}"> N/A </span></td>
+				<td><span th:text="${bidlistmodel.bidQuantity}"> N/A </span></td>
+				<td>
+					<form th:action="@{/empDelete}" th:object="${emp2}" method="post">
+					<input type="hidden" name="id" th:value="${bidListId}">
+					<button type="submit">Delete</button>
+				</form>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>

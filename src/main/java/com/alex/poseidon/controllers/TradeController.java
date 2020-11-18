@@ -1,7 +1,9 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.TradeControllerInterface;
-import com.alex.poseidon.models.Trade;
+import com.alex.poseidon.models.TradeModel;
+import com.alex.poseidon.services.BidListService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +16,9 @@ import javax.validation.Valid;
 
 @Controller
 public class TradeController implements TradeControllerInterface {
-    // TODO: Inject Trade service
+
+    @Autowired
+    BidListService bidListService;
 
     @Override
     @RequestMapping("/trade/list")
@@ -26,13 +30,13 @@ public class TradeController implements TradeControllerInterface {
 
     @Override
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) {
+    public String addUser(TradeModel bid) {
         return "trade/add";
     }
 
     @Override
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade, BindingResult result, Model model) {
+    public String validate(@Valid TradeModel trade, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Trade list
         return "trade/add";
     }
@@ -46,7 +50,7 @@ public class TradeController implements TradeControllerInterface {
 
     @Override
     @PostMapping("/trade/update/{id}")
-    public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
+    public String updateTrade(@PathVariable("id") Integer id, @Valid TradeModel trade,
                               BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Trade and return Trade list
         return "redirect:/trade/list";

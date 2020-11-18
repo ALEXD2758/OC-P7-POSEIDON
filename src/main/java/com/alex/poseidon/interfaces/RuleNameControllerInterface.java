@@ -1,6 +1,6 @@
 package com.alex.poseidon.interfaces;
 
-import com.alex.poseidon.models.RuleName;
+import com.alex.poseidon.models.RuleNameModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,16 @@ public interface RuleNameControllerInterface {
     String home(Model model);
 
     @GetMapping("/ruleName/add")
-    String addRuleForm(RuleName bid);
+    String addRuleForm(RuleNameModel bid);
 
     @PostMapping("/ruleName/validate")
-    String validate(@Valid RuleName ruleName, BindingResult result, Model model);
+    String validate(@Valid RuleNameModel ruleName, BindingResult result, Model model);
 
     @GetMapping("/ruleName/update/{id}")
     String showUpdateForm(@PathVariable("id") Integer id, Model model);
 
     @PostMapping("/ruleName/update/{id}")
-    String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
+    String updateRuleName(@PathVariable("id") Integer id, @Valid RuleNameModel ruleName,
                           BindingResult result, Model model);
 
     @GetMapping("/ruleName/delete/{id}")

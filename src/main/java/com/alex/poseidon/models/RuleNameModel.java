@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rulename")
-public class RuleName {
+public class RuleNameModel {
 
     @Id
     @Column(name = "id")
@@ -19,9 +19,9 @@ public class RuleName {
     String json;
     @Column(name = "template")
     String template;
-    @Column(name = "sqlStr")
+    @Column(name = "sql_str")
     String sqlStr;
-    @Column(name = "sqlPart")
+    @Column(name = "sql_part")
     String sqlPart;
 
     public Integer getId() {

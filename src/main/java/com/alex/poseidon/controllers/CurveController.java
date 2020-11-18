@@ -1,7 +1,7 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.CurveControllerInterface;
-import com.alex.poseidon.models.CurvePoint;
+import com.alex.poseidon.models.CurvePointModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,13 +26,13 @@ public class CurveController implements CurveControllerInterface {
 
     @Override
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
+    public String addBidForm(CurvePointModel bid) {
         return "curvePoint/add";
     }
 
     @Override
     @PostMapping("/curvePoint/validate")
-    public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
+    public String validate(@Valid CurvePointModel curvePoint, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Curve list
         return "curvePoint/add";
     }
@@ -46,7 +46,7 @@ public class CurveController implements CurveControllerInterface {
 
     @Override
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePointModel curvePoint,
                             BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Curve and return Curve list
         return "redirect:/curvePoint/list";

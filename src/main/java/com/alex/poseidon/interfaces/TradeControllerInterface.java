@@ -1,6 +1,6 @@
 package com.alex.poseidon.interfaces;
 
-import com.alex.poseidon.models.Trade;
+import com.alex.poseidon.models.TradeModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,16 @@ public interface TradeControllerInterface {
     String home(Model model);
 
     @GetMapping("/trade/add")
-    String addUser(Trade bid);
+    String addUser(TradeModel bid);
 
     @PostMapping("/trade/validate")
-    String validate(@Valid Trade trade, BindingResult result, Model model);
+    String validate(@Valid TradeModel trade, BindingResult result, Model model);
 
     @GetMapping("/trade/update/{id}")
     String showUpdateForm(@PathVariable("id") Integer id, Model model);
 
     @PostMapping("/trade/update/{id}")
-    String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
+    String updateTrade(@PathVariable("id") Integer id, @Valid TradeModel trade,
                        BindingResult result, Model model);
 
     @GetMapping("/trade/delete/{id}")

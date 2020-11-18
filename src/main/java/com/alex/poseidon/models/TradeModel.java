@@ -7,26 +7,26 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "trade")
-public class Trade {
+public class TradeModel {
 
     @Id
-    @Column(name = "tradeId")
+    @Column(name = "trade_id")
     Integer tradeId;
     @Column(name = "account")
     String account;
     @Column(name = "type")
     String type;
-    @Column(name = "buyQuantity")
+    @Column(name = "buy_quantity")
     Double buyQuantity;
-    @Column(name = "sellQuantity")
+    @Column(name = "sell_quantity")
     Double sellQuantity;
-    @Column(name = "buyPrice")
+    @Column(name = "buy_price")
     Double buyPrice;
-    @Column(name = "sellPrice")
+    @Column(name = "sell_price")
     Double sellPrice;
     @Column(name = "benchmark")
     String benchmark;
-    @Column(name = "tradeDate")
+    @Column(name = "trade_date")
     Timestamp tradeDate;
     @Column(name = "security")
     String security;
@@ -36,19 +36,19 @@ public class Trade {
     String trader;
     @Column(name = "book")
     String book;
-    @Column(name = "creationName")
+    @Column(name = "creation_name")
     String creationName;
-    @Column(name = "creationDate")
+    @Column(name = "creation_date")
     Timestamp creationDate;
-    @Column(name = "revisionName")
+    @Column(name = "revision_name")
     String revisionName;
-    @Column(name = "revisionDate")
+    @Column(name = "revision_date")
     Timestamp revisionDate;
-    @Column(name = "dealName")
+    @Column(name = "deal_name")
     String dealName;
-    @Column(name = "dealType")
+    @Column(name = "deal_type")
     String dealType;
-    @Column(name = "sourceListId")
+    @Column(name = "source_list_id")
     String sourceListId;
     @Column(name = "side")
     String side;

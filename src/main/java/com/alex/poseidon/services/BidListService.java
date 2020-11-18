@@ -1,11 +1,13 @@
 package com.alex.poseidon.services;
 
-import com.alex.poseidon.models.BidList;
+import com.alex.poseidon.models.BidListModel;
 import com.alex.poseidon.repositories.BidListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BidListService {
 
     private BidListRepository bidListRep;
@@ -19,11 +21,11 @@ public class BidListService {
         return bidListRep.existsById(bidListId);
     }
     
-    public List<BidList> getAllBids() {
+    public List<BidListModel> getAllBids() {
         return bidListRep.findAll();
     }
 
-    public void saveBid(BidList bidList) {
+    public void saveBid(BidListModel bidList) {
         bidListRep.save(bidList);
     }
 

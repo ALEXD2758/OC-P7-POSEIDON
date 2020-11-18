@@ -16,7 +16,7 @@ public class LoginController implements LoginControllerInterface {
     private UserRepository userRepository;
 
     @Override
-    @GetMapping("login")
+    @GetMapping("/login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("login");

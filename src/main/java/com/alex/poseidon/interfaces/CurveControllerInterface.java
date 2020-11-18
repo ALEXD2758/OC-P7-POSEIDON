@@ -1,6 +1,6 @@
 package com.alex.poseidon.interfaces;
 
-import com.alex.poseidon.models.CurvePoint;
+import com.alex.poseidon.models.CurvePointModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,16 @@ public interface CurveControllerInterface {
     String home(Model model);
 
     @GetMapping("/curvePoint/add")
-    String addBidForm(CurvePoint bid);
+    String addBidForm(CurvePointModel bid);
 
     @PostMapping("/curvePoint/validate")
-    String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model);
+    String validate(@Valid CurvePointModel curvePoint, BindingResult result, Model model);
 
     @GetMapping("/curvePoint/update/{id}")
     String showUpdateForm(@PathVariable("id") Integer id, Model model);
 
     @PostMapping("/curvePoint/update/{id}")
-    String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+    String updateBid(@PathVariable("id") Integer id, @Valid CurvePointModel curvePoint,
                      BindingResult result, Model model);
 
     @GetMapping("/curvePoint/delete/{id}")
