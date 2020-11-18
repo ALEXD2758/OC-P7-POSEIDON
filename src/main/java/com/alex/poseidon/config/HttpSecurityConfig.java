@@ -32,18 +32,15 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
+                //.csrf()
+                //.disable()
                 .authorizeRequests()
-                .antMatchers("/register", "/postRegister", "/register_account",
-                    		"/postRegister_account").permitAll()
-                 //   .antMatchers("/home").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/home", true).
+                  //  .loginPage("/login")
+                    .defaultSuccessUrl("/trade/list", true).
                  and()
                  	.logout()
                  	.invalidateHttpSession(true)
@@ -64,4 +61,5 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new Pbkdf2PasswordEncoder();
     }   
+
 }
