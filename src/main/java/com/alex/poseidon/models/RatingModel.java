@@ -7,12 +7,18 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rating")
-public class Rating {
+public class RatingModel {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "moodys_rating")
     String moodysRating;
+    @Column(name = "sand_p_rating")
     String sandPRating;
+    @Column(name = "fitch_rating")
     String fitchRating;
+    @Column(name = "order_number")
     Integer orderNumber;
 
     public Integer getId() {

@@ -10,13 +10,20 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "curvepoint")
-public class CurvePoint {
+public class CurvePointModel {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "curve_id")
     Integer curveId;
+    @Column(name = "as_of_date")
     Timestamp asOfDate;
+    @Column(name = "term")
     Double term;
+    @Column(name = "value")
     Double value;
+    @Column(name = "creation_date")
     Timestamp creationDate;
 
     public Integer getId() {

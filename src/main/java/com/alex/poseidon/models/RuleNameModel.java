@@ -6,14 +6,22 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rulename")
-public class RuleName {
+public class RuleNameModel {
 
+    @Id
+    @Column(name = "id")
     Integer id;
+    @Column(name = "name")
     String name;
+    @Column(name = "description")
     String description;
+    @Column(name = "json")
     String json;
+    @Column(name = "template")
     String template;
+    @Column(name = "sql_str")
     String sqlStr;
+    @Column(name = "sql_part")
     String sqlPart;
 
     public Integer getId() {
