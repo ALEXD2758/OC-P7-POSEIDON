@@ -12,11 +12,7 @@ public interface BidListRepository extends JpaRepository<BidListModel, Integer> 
 
     List<BidListModel> findAll();
 
-    //To probable later implementation
-    // Page<BidListModel> findAll(Pageable pageable);
-
     List<BidListModel> findAllById(Iterable<Integer> integers);
 
     BidListModel findByBidListId(int bidListId);
-
 }

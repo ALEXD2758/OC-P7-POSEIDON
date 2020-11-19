@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -15,18 +16,18 @@ public interface CurveControllerInterface {
     String home(Model model);
 
     @GetMapping("/curvePoint/add")
-    String addBidForm(CurvePointModel bid);
+    String addCurvePointForm(Model model);
 
     @PostMapping("/curvePoint/validate")
-    String validate(@Valid CurvePointModel curvePoint, BindingResult result, Model model);
+    String validate(@Valid CurvePointModel curvePoint, BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/curvePoint/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/curvePoint/update/{id}")
-    String updateBid(@PathVariable("id") Integer id, @Valid CurvePointModel curvePoint,
-                     BindingResult result, Model model);
+    String updateCurvePoint(@PathVariable("id") int id, @Valid CurvePointModel curvePoint,
+                     BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/curvePoint/delete/{id}")
-    String deleteBid(@PathVariable("id") Integer id, Model model);
+    String deleteCurvePoint(@PathVariable("id") int id, Model model, RedirectAttributes ra);
 }

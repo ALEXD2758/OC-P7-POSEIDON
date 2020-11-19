@@ -69,10 +69,9 @@ public class BidListController implements BidListControllerInterface {
     @Override
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidListModel bid, BindingResult result, Model model, RedirectAttributes ra) {
-
         if (!result.hasErrors()) {
             bidListService.saveBid(bid);
-            ra.addFlashAttribute("successSaveMessage", "successMessage");
+            ra.addFlashAttribute("successSaveMessage", "Your bid was successfully added");
             model.addAttribute("bidList", bidListService.getAllBids());
             return "redirect:/bidList/list";
         }
