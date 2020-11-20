@@ -3,8 +3,7 @@ package com.alex.poseidon.models;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 
 
@@ -13,32 +12,39 @@ import java.sql.Timestamp;
 public class CurvePointModel {
 
     @Id
+    @NotNull
     @Column(name = "id")
-    Integer id;
+    int id;
+    @Positive(message = "Curve point Id must be greater than zero")
+    @NotNull(message = "Curve point Id is mandatory")
     @Column(name = "curve_id")
-    Integer curveId;
+    int curveId;
     @Column(name = "as_of_date")
     Timestamp asOfDate;
+    @NotNull(message = "Term is mandatory")
+    @PositiveOrZero(message = "Term should be a decimal number and greater than zero")
     @Column(name = "term")
     Double term;
+    @NotNull(message = "Value is mandatory")
+    @PositiveOrZero(message = "Value should be a decimal number and greater than zero")
     @Column(name = "value")
     Double value;
     @Column(name = "creation_date")
     Timestamp creationDate;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getCurveId() {
+    public int getCurveId() {
         return curveId;
     }
 
-    public void setCurveId(Integer curveId) {
+    public void setCurveId(int curveId) {
         this.curveId = curveId;
     }
 

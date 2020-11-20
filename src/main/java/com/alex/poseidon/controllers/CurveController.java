@@ -5,20 +5,21 @@ import com.alex.poseidon.models.BidListModel;
 import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.services.BidListService;
 import com.alex.poseidon.services.CurvePointService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 public class CurveController implements CurveControllerInterface {
+
+    private static final Logger logger = LogManager.getLogger("CurveController");
 
     @Autowired
     CurvePointService curvePointService;
@@ -35,6 +36,7 @@ public class CurveController implements CurveControllerInterface {
     @RequestMapping("/curvePoint/list")
     public String home(Model model) {
         model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
+        logger.info("curvePoint/list : OK");
         return "curvePoint/list";
     }
 
@@ -50,6 +52,7 @@ public class CurveController implements CurveControllerInterface {
     @GetMapping("/curvePoint/add")
     public String addCurvePointForm(Model model) {
         model.addAttribute("curvePoint", new CurvePointModel());
+        logger.info("GET /curvePoint/add : OK");
         return "curvePoint/add";
     }
 
@@ -69,13 +72,18 @@ public class CurveController implements CurveControllerInterface {
      */
     @Override
     @PostMapping("/curvePoint/validate")
-    public String validate(@Valid CurvePointModel curvePoint, BindingResult result, Model model, RedirectAttributes ra) {
+    public String validate(@Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint, BindingResult result,
+                           Model model, RedirectAttributes ra) {
         if (!result.hasErrors()) {
+            curvePoint.setCreationDate(curvePointService.getTimestampForFieldCreationDate());
             curvePointService.saveCurvePoint(curvePoint);
             ra.addFlashAttribute("successSaveMessage", "Your curve point was successfully added");
             model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
+
+            logger.info("POST /curvePoint/validate : OK");
             return "redirect:/curvePoint/list";
         }
+        logger.info("/curvePoint/validate : NOK");
         return "curvePoint/add";
     }
 
@@ -94,7 +102,9 @@ public class CurveController implements CurveControllerInterface {
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
             model.addAttribute("curvePoint", curvePointService.getCurvePointById(id));
+            logger.info("GET /curvePoint/update : OK");
         } catch (Exception e) {
+            logger.info("/curvePoint/delete : NOK " + "Invalid curve point ID " + id);
             throw new IllegalArgumentException("Invalid curve point ID " + id);
         }
         return "curvePoint/update";
@@ -114,14 +124,19 @@ public class CurveController implements CurveControllerInterface {
      */
     @Override
     @PostMapping("/curvePoint/update/{id}")
-    public String updateCurvePoint(@PathVariable("id") int id, @Valid CurvePointModel curvePoint,
+    public String updateCurvePoint(@PathVariable("id") int id,
+                                   @Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint,
                             BindingResult result, Model model, RedirectAttributes ra) {
         if (result.hasErrors()) {
+            logger.info("POST /curvePoint/update : NOK");
             return "/curvePoint/list";
         }
+        curvePoint.setCreationDate(curvePointService.getTimestampForFieldCreationDate());
         curvePointService.saveCurvePoint(curvePoint);
         ra.addFlashAttribute("successUpdateMessage", "Your curve point was successfully updated");
         model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
+
+        logger.info("POST /curvePoint/update : OK");
         return "redirect:/curvePoint/list";
     }
 
@@ -143,8 +158,11 @@ public class CurveController implements CurveControllerInterface {
             curvePointService.deleteCurvePointById(id);
             model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
             ra.addFlashAttribute("successDeleteMessage", "This curve point was successfully deleted");
+
+            logger.info("/curvePoint/delete : OK");
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the curve point");
+            logger.info("/curvePoint/delete : NOK " + "Invalid curve point ID " + id);
             throw new IllegalArgumentException("Invalid curve point ID " + id);
         }
         return "redirect:/curvePoint/list";

@@ -1,5 +1,6 @@
 package com.alex.poseidon.controllers;
 
+import com.alex.poseidon.models.RuleNameModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,12 +23,12 @@ public class RuleNameController {
     }
 
     @GetMapping("/ruleName/add")
-    public String addRuleForm(RuleName bid) {
+    public String addRuleForm(RuleNameModel bid) {
         return "ruleName/add";
     }
 
     @PostMapping("/ruleName/validate")
-    public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
+    public String validate(@Valid RuleNameModel ruleName, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return RuleName list
         return "ruleName/add";
     }
@@ -39,7 +40,7 @@ public class RuleNameController {
     }
 
     @PostMapping("/ruleName/update/{id}")
-    public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
+    public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleNameModel ruleName,
                              BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update RuleName and return RuleName list
         return "redirect:/ruleName/list";
