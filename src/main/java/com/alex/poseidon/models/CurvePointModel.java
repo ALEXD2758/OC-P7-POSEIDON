@@ -14,23 +14,24 @@ public class CurvePointModel {
     @Id
     @NotNull
     @Column(name = "id")
-    int id;
+    private int id;
     @Positive(message = "Curve point Id must be greater than zero")
     @NotNull(message = "Curve point Id is mandatory")
     @Column(name = "curve_id")
-    int curveId;
+    private int curveId;
+    @FutureOrPresent(message = "The as of date should be a date in the future or now")
     @Column(name = "as_of_date")
-    Timestamp asOfDate;
+    private Timestamp asOfDate;
     @NotNull(message = "Term is mandatory")
     @PositiveOrZero(message = "Term should be a decimal number and greater than zero")
     @Column(name = "term")
-    Double term;
+    private Double term;
     @NotNull(message = "Value is mandatory")
     @PositiveOrZero(message = "Value should be a decimal number and greater than zero")
     @Column(name = "value")
-    Double value;
+    private Double value;
     @Column(name = "creation_date")
-    Timestamp creationDate;
+    private Timestamp creationDate;
 
     public int getId() {
         return id;

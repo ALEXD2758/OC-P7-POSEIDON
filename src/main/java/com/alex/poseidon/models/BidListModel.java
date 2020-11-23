@@ -34,6 +34,7 @@ public class BidListModel {
     @Size(max=125)
     @Column(name = "benchmark")
     private String benchmark;
+    @FutureOrPresent(message = "The bid list date should be a date in the future or now")
     @Column(name = "bid_list_date")
     private Timestamp bidListDate;
     @Size(max=125)
@@ -59,6 +60,7 @@ public class BidListModel {
     @Size(max=125)
     @Column(name = "revision_name")
     private String revisionName;
+    @FutureOrPresent(message = "The revision date should be a date in the future or now")
     @Column(name = "revision_date")
     private Timestamp revisionDate;
     @Size(max=125)
