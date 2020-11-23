@@ -33,10 +33,10 @@ public class CurveController implements CurveControllerInterface {
      * with attribute
      */
     @Override
-    @RequestMapping("/curvePoint/list")
+    @GetMapping("/curvePoint/list")
     public String home(Model model) {
         model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
-        logger.info("curvePoint/list : OK");
+        logger.info("GET /curvePoint/list : OK");
         return "curvePoint/list";
     }
 

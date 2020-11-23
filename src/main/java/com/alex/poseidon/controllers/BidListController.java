@@ -35,10 +35,10 @@ public class BidListController implements BidListControllerInterface {
      * with attribute
      */
     @Override
-    @RequestMapping("/bidList/list")
+    @GetMapping("/bidList/list")
     public String home(Model model) {
         model.addAttribute("bidList", bidListService.getAllBids());
-        logger.info("bidList/list : OK");
+        logger.info("GET /bidList/list : OK");
         return "bidList/list";
     }
 
