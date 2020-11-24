@@ -2,6 +2,7 @@ package com.alex.poseidon.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
@@ -22,6 +23,7 @@ public class RatingModel {
     @Size(max=125, message = "The size of fitch Rating must be of maximum 125 characters")
     @Column(name = "fitch_rating")
     private String fitchRating;
+    @NotNull(message= "Order Number is mandatory")
     @Column(name = "order_number")
     private int orderNumber;
 

@@ -50,7 +50,7 @@ public class RatingController implements RatingControllerInterface {
     @Override
     @GetMapping("/rating/add")
     public String addRatingForm(Model model) {
-        model.addAttribute("rating", new CurvePointModel());
+        model.addAttribute("rating", new RatingModel());
         logger.info("GET /rating/add : OK");
         return "rating/add";
     }
