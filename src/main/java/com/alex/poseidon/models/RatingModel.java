@@ -3,6 +3,7 @@ package com.alex.poseidon.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,21 +12,24 @@ public class RatingModel {
 
     @Id
     @Column(name = "id")
-    Integer id;
+    private int id;
+    @Size(max=125, message = "The size of moodys Rating must be of maximum 125 characters")
     @Column(name = "moodys_rating")
-    String moodysRating;
+    private String moodysRating;
+    @Size(max=125, message = "The size of sand PRating must be of maximum 125 characters")
     @Column(name = "sand_p_rating")
-    String sandPRating;
+    private String sandPRating;
+    @Size(max=125, message = "The size of fitch Rating must be of maximum 125 characters")
     @Column(name = "fitch_rating")
-    String fitchRating;
+    private String fitchRating;
     @Column(name = "order_number")
-    Integer orderNumber;
+    private int orderNumber;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,11 +57,11 @@ public class RatingModel {
         this.fitchRating = fitchRating;
     }
 
-    public Integer getOrderNumber() {
+    public int getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
+    public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 }

@@ -31,48 +31,48 @@ public class BidListModel {
     private double bid;
     @Column(name = "ask")
     private double ask;
-    @Size(max=125)
+    @Size(max=125, message = "The size of benchmark must be of maximum 125 characters")
     @Column(name = "benchmark")
     private String benchmark;
     @FutureOrPresent(message = "The bid list date should be a date in the future or now")
     @Column(name = "bid_list_date")
     private Timestamp bidListDate;
-    @Size(max=125)
+    @Size(max=125, message = "The size of commentary must be of maximum 125 characters")
     @Column(name = "commentary")
     private String commentary;
-    @Size(max=125)
+    @Size(max=125, message = "The size of security must be of maximum 125 characters")
     @Column(name = "security")
     private String security;
-    @Size(max=10)
+    @Size(max=125, message = "The size of status must be of maximum 10 characters")
     @Column(name = "status")
     private String status;
-    @Size(max=125)
+    @Size(max=125, message = "The size of trader must be of maximum 125 characters")
     @Column(name = "trader")
     private String trader;
-    @Size(max=125)
+    @Size(max=125, message = "The size of book must be of maximum 125 characters")
     @Column(name = "book")
     private String book;
-    @Size(max=125)
+    @Size(max=125, message = "The size of the created name must be of maximum 125 characters")
     @Column(name = "creation_name")
     private String creationName;
     @Column(name = "creation_date")
     private Timestamp creationDate;
-    @Size(max=125)
+    @Size(max=125, message = "The size of the revision name must be of maximum 125 characters")
     @Column(name = "revision_name")
     private String revisionName;
     @FutureOrPresent(message = "The revision date should be a date in the future or now")
     @Column(name = "revision_date")
     private Timestamp revisionDate;
-    @Size(max=125)
+    @Size(max=125, message = "The size of the deal name must be of maximum 125 characters")
     @Column(name = "deal_name")
     private String dealName;
-    @Size(max=125)
+    @Size(max=125, message = "The size of the deal type must be of maximum 125 characters")
     @Column(name = "deal_type")
     private String dealType;
-    @Size(max=125)
+    @Size(max=125, message = "The size of the source list Id must be of maximum 125 characters")
     @Column(name = "source_list_id")
     private String sourceListId;
-    @Size(max=125)
+    @Size(max=125, message = "The size of side must be of maximum 125 characters")
     @Column(name = "side")
     private String side;
 
