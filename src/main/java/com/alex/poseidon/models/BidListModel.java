@@ -3,8 +3,7 @@ package com.alex.poseidon.models;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -15,10 +14,15 @@ public class BidListModel {
     @Id
     @Column(name = "bid_list_id")
     private int bidListId;
+    @NotBlank(message = "Account is mandatory")
+    @Size(max = 30)
     @Column(name = "account")
     private String account;
+    @NotBlank(message = "Type is mandatory")
+    @Size(max = 30)
     @Column(name = "type")
     private String type;
+    @Positive(message = "Bid Quantity must be greater than zero")
     @Column(name = "bid_quantity")
     private double bidQuantity;
     @Column(name = "ask_quantity")
@@ -27,34 +31,48 @@ public class BidListModel {
     private double bid;
     @Column(name = "ask")
     private double ask;
+    @Size(max=125)
     @Column(name = "benchmark")
     private String benchmark;
+    @FutureOrPresent(message = "The bid list date should be a date in the future or now")
     @Column(name = "bid_list_date")
     private Timestamp bidListDate;
+    @Size(max=125)
     @Column(name = "commentary")
     private String commentary;
+    @Size(max=125)
     @Column(name = "security")
     private String security;
+    @Size(max=10)
     @Column(name = "status")
     private String status;
+    @Size(max=125)
     @Column(name = "trader")
     private String trader;
+    @Size(max=125)
     @Column(name = "book")
     private String book;
+    @Size(max=125)
     @Column(name = "creation_name")
     private String creationName;
     @Column(name = "creation_date")
     private Timestamp creationDate;
+    @Size(max=125)
     @Column(name = "revision_name")
     private String revisionName;
+    @FutureOrPresent(message = "The revision date should be a date in the future or now")
     @Column(name = "revision_date")
     private Timestamp revisionDate;
+    @Size(max=125)
     @Column(name = "deal_name")
     private String dealName;
+    @Size(max=125)
     @Column(name = "deal_type")
     private String dealType;
+    @Size(max=125)
     @Column(name = "source_list_id")
     private String sourceListId;
+    @Size(max=125)
     @Column(name = "side")
     private String side;
 

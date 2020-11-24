@@ -24,11 +24,16 @@
 		</div>
 	</div>
 	<div class="row"><h2>Curve Point List</h2></div>
+	<p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}" th:text="${errorDeleteMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}" th:text="${successDeleteMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}" th:text="${successUpdateMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}" th:text="${successSaveMessage}"></p>
 	<div class="row">
 		<a href="/curvePoint/add" class="btn btn-primary btn-sm">Add New</a>
+
 		<table class="table table-bordered">
 			<thead>
-				<tr>
+			<tr>
 					<th>Id</th>
 					<th>CurvePointId</th>
 					<th>Term</th>
@@ -37,7 +42,20 @@
 				</tr>
 			</thead>
 			<tbody>
-			<!-- TODO: Show all CurvePoint to the table, the action column will have Edit & Delete buttons -->
+			<tr th:if="${curvePoint.empty}">
+				<td colspan="2"> No bid available </td>
+			</tr>
+			<tr th:each="curvePointModel : ${curvePoint}">
+
+				<td><span th:text="${curvePointModel.id}"> N/A </span></td>
+				<td><span th:text="${curvePointModel.curveId}"> N/A </span></td>
+				<td><span th:text="${curvePointModel.term}"> N/A </span></td>
+				<td><span th:text="${curvePointModel.value}"> N/A </span></td>
+				<td style="width: 15%" class="text-center">
+					<a th:href="@{/curvePoint/update/{id}(id=${curvePointModel.id})}">Edit</a>&nbsp;|&nbsp;
+					<a th:href="@{/curvePoint/delete/{id}(id=${curvePointModel.id})}" onclick="return confirm('Are you sure you want to delete this curve point?')">Delete</a>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>
