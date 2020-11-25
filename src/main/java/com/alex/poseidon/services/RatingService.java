@@ -38,17 +38,4 @@ public class RatingService {
     public RatingModel getRatingById(int id) {
         return ratingRep.findById(id);
     }
-    /**
-     * Get a timestamp for the field creationDate
-     *
-     * @return a timestamp of the current time and date
-     */
-    public Timestamp getTimestampForFieldCreationDate(){
-        Date date= new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        Timestamp ts = new Timestamp(time);
-        return ts;
-    }
 }

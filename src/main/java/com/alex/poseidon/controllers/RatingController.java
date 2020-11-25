@@ -74,7 +74,6 @@ public class RatingController implements RatingControllerInterface {
     public String validate(@Valid @ModelAttribute("rating") RatingModel rating, BindingResult result, Model model,
                            RedirectAttributes ra) {
         if (!result.hasErrors()) {
-            //  rating.setCreationDate(ratingService.getTimestampForFieldCreationDate());
             ratingService.saveRating(rating);
             ra.addFlashAttribute("successSaveMessage", "Your rating was successfully added");
             model.addAttribute("rating", ratingService.getAllRatings());
@@ -130,7 +129,6 @@ public class RatingController implements RatingControllerInterface {
             logger.info("POST /rating/update : NOK");
             return "/rating/list";
         }
-        //   rating.setCreationDate(ratingService.getTimestampForFieldCreationDate());
         ratingService.saveRating(rating);
         ra.addFlashAttribute("successUpdateMessage", "Your rating was successfully updated");
         model.addAttribute("rating", ratingService.getAllRatings());
