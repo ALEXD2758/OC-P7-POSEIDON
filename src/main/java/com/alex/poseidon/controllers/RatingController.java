@@ -1,124 +1,167 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.RatingControllerInterface;
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.RatingModel;
+import com.alex.poseidon.services.CurvePointService;
+import com.alex.poseidon.services.RatingService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 public class RatingController implements RatingControllerInterface {
-    // TODO: Inject Rating service
 
+    private static final Logger logger = LogManager.getLogger("RatingController");
+
+    @Autowired
+    RatingService ratingService;
     /**
-     * Render the view bidList/list
-     * Adds attribute BidList to the model, containing all Bids available in DB
+     * Render the view rating/list
+     * Adds attribute rating to the model, containing all ratings available in DB
      *
      * @param model Model Interface, to add attributes to it
-     * @return a string to the address "bidList/list", returning the associated view
+     * @return a string to the address "rating/list", returning the associated view
      * with attribute
      */
     @Override
-    @RequestMapping("/rating/list")
-    public String home(Model model)
-    {
-        // TODO: find all Rating, add to model
+    @GetMapping("/rating/list")
+    public String home(Model model) {
+        model.addAttribute("rating", ratingService.getAllRatings());
+        logger.info("GET /rating/list : OK");
         return "rating/list";
     }
 
     /**
-     * Render the view bidList/add
-     * Adds attribute BidList to the model, containing a new BidMidListModel
+     * Render the view rating/add
+     * Adds attribute rating to the model, containing a new RatingModel
      *
      * @param model for the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/add", returning the associated view
+     * @return a string to the address "rating/add", returning the associated view
      * with attribute
      */
     @Override
     @GetMapping("/rating/add")
-    public String addRatingForm(RatingModel rating) {
+    public String addRatingForm(Model model) {
+        model.addAttribute("rating", new RatingModel());
+        logger.info("GET /rating/add : OK");
         return "rating/add";
     }
 
     /**
-     * Save new Bid to the table bidlist if Bindingresult has no errors
+     * Save new rating to the table rating if Bindingresult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute rating to the model, containing all ratings available in DB
      *
-     * @param bid the BidListModel with annotation @Valid (for the possible constraints)
+     * @param rating the RatingModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
-     * @param ra the RedirectAttributes to redirect attributes in redirect scenarios
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @param ra the RedirectAttributes to redirect attributes in redirect
+     * @return a string to the address "rating/list", returning the associated view,
      * with attributes if no errors in BindingResult
-     * @return a string to the address "bidList/add", returning the associated view,
+     * @return a string to the address "rating/add", returning the associated view,
      *  if there is an error in BindingResult
      */
     @Override
     @PostMapping("/rating/validate")
-    public String validate(@Valid RatingModel rating, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rating list
+    public String validate(@Valid @ModelAttribute("rating") RatingModel rating, BindingResult result, Model model,
+                           RedirectAttributes ra) {
+        if (!result.hasErrors()) {
+            ratingService.saveRating(rating);
+            ra.addFlashAttribute("successSaveMessage", "Your rating was successfully added");
+            model.addAttribute("rating", ratingService.getAllRatings());
+
+            logger.info("POST /rating/validate : OK");
+            return "redirect:/rating/list";
+        }
+        logger.info("POST /rating/validate : NOK");
         return "rating/add";
     }
 
     /**
-     * Render the view bidList/update with the chosen bidListId in a model attribute
+     * Render the view rating/update with the chosen id in a model attribute
      * with the associated data of the chosen ID
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute rating to the model, containing all ratings available in DB
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/update", returning the associated view
+     * @return a string to the address "rating/update", returning the associated view
      * with attribute (if no Exception)
      */
     @Override
     @GetMapping("/rating/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rating by Id and to model then show to the form
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        try {
+            model.addAttribute("rating", ratingService.getRatingById(id));
+            logger.info("GET /rating/update : OK");
+        } catch (Exception e) {
+            logger.info("GET /rating/delete : NOK " + "Invalid rating ID " + id);
+            throw new IllegalArgumentException("Invalid rating ID " + id);
+        }
         return "rating/update";
     }
 
     /**
-     * Update existing Bid to the table bidlist if BindingResult has no errors
+     * Update existing rating to the table rating if BindingResult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute rating to the model, containing all ratings available in DB
      *
-     * @param bidList the BidListModel with annotation @Valid (for the possible constraints)
+     * @param rating the RatingModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "rating/list", returning the associated view,
      * with attributes
      */
     @Override
     @PostMapping("/rating/update/{id}")
-    public String updateRating(@PathVariable("id") Integer id, @Valid RatingModel rating,
-                               BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rating and return Rating list
+    public String updateRating(@PathVariable("id") int id,
+                               @Valid @ModelAttribute("rating") RatingModel rating,
+                               BindingResult result, Model model, RedirectAttributes ra) {
+        if (result.hasErrors()) {
+            logger.info("POST /rating/update : NOK");
+            return "/rating/list";
+        }
+        ratingService.saveRating(rating);
+        ra.addFlashAttribute("successUpdateMessage", "Your rating was successfully updated");
+        model.addAttribute("rating", ratingService.getAllRatings());
+
+        logger.info("POST /rating/update : OK");
         return "redirect:/rating/list";
     }
 
     /**
-     * Delete existing Bid from the table bidlist
+     * Delete existing rating from the table rating
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute rating to the model, containing all ratings available in DB
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "rating/list", returning the associated view,
      * with attributes
      */
     @Override
     @GetMapping("/rating/delete/{id}")
-    public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rating by Id and delete the Rating, return to Rating list
+    public String deleteRating(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
+        try {
+            ratingService.deleteRatingById(id);
+            model.addAttribute("rating", ratingService.getAllRatings());
+            ra.addFlashAttribute("successDeleteMessage", "This rating was successfully deleted");
+
+            logger.info("/rating/delete : OK");
+        } catch (Exception e) {
+            ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the rating");
+            logger.info("/rating/delete : NOK " + "Invalid rating ID " + id);
+            throw new IllegalArgumentException("Invalid rating ID " + id);
+        }
         return "redirect:/rating/list";
     }
 }

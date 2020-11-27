@@ -3,10 +3,8 @@ package com.alex.poseidon.interfaces;
 import com.alex.poseidon.models.RatingModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -15,18 +13,20 @@ public interface RatingControllerInterface {
     String home(Model model);
 
     @GetMapping("/rating/add")
-    String addRatingForm(RatingModel rating);
+    String addRatingForm(Model model);
 
     @PostMapping("/rating/validate")
-    String validate(@Valid RatingModel rating, BindingResult result, Model model);
+    String validate(@Valid @ModelAttribute("rating") RatingModel rating, BindingResult result, Model model,
+                    RedirectAttributes ra);
 
     @GetMapping("/rating/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/rating/update/{id}")
-    String updateRating(@PathVariable("id") Integer id, @Valid RatingModel rating,
-                        BindingResult result, Model model);
+    String updateRating(@PathVariable("id") int id,
+                        @Valid @ModelAttribute("rating") RatingModel rating,
+                        BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/rating/delete/{id}")
-    String deleteRating(@PathVariable("id") Integer id, Model model);
+    String deleteRating(@PathVariable("id") int id, Model model, RedirectAttributes ra);
 }
