@@ -1,124 +1,169 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.RuleNameControllerInterface;
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.RuleNameModel;
+import com.alex.poseidon.services.CurvePointService;
+import com.alex.poseidon.services.RuleNameService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 public class RuleNameController implements RuleNameControllerInterface {
-    // TODO: Inject RuleName service
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/list
-     * Adds attribute BidList to the model, containing all Bids available in DB
+    private static final Logger logger = LogManager.getLogger("RuleNameController");
+
+    @Autowired
+    RuleNameService ruleNameService;
+
+    /**
+     * Render the view ruleName/list
+     * Adds attribute ruleName to the model, containing all rule names available in DB
      *
      * @param model Model Interface, to add attributes to it
-     * @return a string to the address "bidList/list", returning the associated view
+     * @return a string to the address "ruleName/list", returning the associated view
      * with attribute
      */
     @Override
-    @RequestMapping("/ruleName/list")
-    public String home(Model model)
-    {
-        // TODO: find all RuleName, add to model
+    @GetMapping("/ruleName/list")
+    public String home(Model model) {
+        model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
+        logger.info("GET /ruleName/list : OK");
         return "ruleName/list";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/add
-     * Adds attribute BidList to the model, containing a new BidMidListModel
+    /**
+     * Render the view ruleName/add
+     * Adds attribute ruleName to the model, containing a new RuleNameModel
      *
      * @param model for the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/add", returning the associated view
+     * @return a string to the address "ruleName/add", returning the associated view
      * with attribute
      */
     @Override
     @GetMapping("/ruleName/add")
-    public String addRuleForm(RuleNameModel bid) {
+    public String addRuleForm(Model model) {
+        model.addAttribute("ruleName", new RuleNameModel());
+        logger.info("GET /ruleName/add : OK");
         return "ruleName/add";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Save new Bid to the table bidlist if Bindingresult has no errors
+    /**
+     * Save new rule name to the table ruleName if BindingResult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute ruleName to the model, containing all rule names available in DB
      *
-     * @param bid the BidListModel with annotation @Valid (for the possible constraints)
+     * @param ruleName the RuleNameModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
-     * @param ra the RedirectAttributes to redirect attributes in redirect scenarios
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @param ra the RedirectAttributes to redirect attributes in redirect
+     * @return a string to the address "ruleName/list", returning the associated view,
      * with attributes if no errors in BindingResult
-     * @return a string to the address "bidList/add", returning the associated view,
+     * @return a string to the address "ruleName/add", returning the associated view,
      *  if there is an error in BindingResult
      */
     @Override
     @PostMapping("/ruleName/validate")
-    public String validate(@Valid RuleNameModel ruleName, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return RuleName list
+    public String validate(@Valid @ModelAttribute("ruleName") RuleNameModel ruleName, BindingResult result,
+                           Model model, RedirectAttributes ra) {
+        if (!result.hasErrors()) {
+            // curvePoint.setCreationDate(ruleNameService.getTimestampForFieldCreationDate());
+            ruleNameService.saveRuleName(ruleName);
+            ra.addFlashAttribute("successSaveMessage", "Your rule name was successfully added");
+            model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
+
+            logger.info("POST /ruleName/validate : OK");
+            return "redirect:/ruleName/list";
+        }
+        logger.info("POST /ruleName/validate : NOK");
         return "ruleName/add";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/update with the chosen bidListId in a model attribute
+    /**
+     * Render the view ruleName/update with the chosen id in a model attribute
      * with the associated data of the chosen ID
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute ruleName to the model
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/update", returning the associated view
+     * @return a string to the address "ruleName/update", returning the associated view
      * with attribute (if no Exception)
      */
     @Override
     @GetMapping("/ruleName/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get RuleName by Id and to model then show to the form
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        try {
+            model.addAttribute("ruleName", ruleNameService.getRuleNameById(id));
+            logger.info("GET /ruleName/update : OK");
+        } catch (Exception e) {
+            logger.info("/ruleName/delete : NOK " + "Invalid rule name ID " + id);
+            throw new IllegalArgumentException("Invalid rule name ID " + id);
+        }
         return "ruleName/update";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Update existing Bid to the table bidlist if BindingResult has no errors
+    /**
+     * Update existing rule name to the table rulename if BindingResult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute ruleName to the model, containing all rule names available in DB
      *
-     * @param bidList the BidListModel with annotation @Valid (for the possible constraints)
+     * @param ruleName the RuleNameModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "ruleName/list", returning the associated view,
      * with attributes
      */
     @Override
     @PostMapping("/ruleName/update/{id}")
-    public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleNameModel ruleName,
-                                 BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update RuleName and return RuleName list
+    public String updateRuleName(@PathVariable("id") int id,
+                                 @Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
+                                 BindingResult result, Model model, RedirectAttributes ra) {
+        if (result.hasErrors()) {
+            logger.info("POST /ruleName/update : NOK");
+            return "/ruleName/list";
+        }
+        ruleNameService.saveRuleName(ruleName);
+        ra.addFlashAttribute("successUpdateMessage", "Your rule name was successfully updated");
+        model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
+
+        logger.info("POST /ruleName/update : OK");
         return "redirect:/ruleName/list";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Delete existing Bid from the table bidlist
+    /**
+     * Delete existing rule name from the table rulename
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute ruleName to the model, containing all rule names available in DB
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "ruleName/list", returning the associated view,
      * with attributes
      */
     @Override
     @GetMapping("/ruleName/delete/{id}")
-    public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
+    public String deleteRuleName(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
+        try {
+            ruleNameService.deleteRuleNameById(id);
+            model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
+            ra.addFlashAttribute("successDeleteMessage", "This rule name was successfully deleted");
+
+            logger.info("/ruleName/delete : OK");
+        } catch (Exception e) {
+            ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the rule name");
+            logger.info("/ruleName/delete : NOK " + "Invalid rule name ID " + id);
+            throw new IllegalArgumentException("Invalid rule name ID " + id);
+        }
         return "redirect:/ruleName/list";
     }
 }
