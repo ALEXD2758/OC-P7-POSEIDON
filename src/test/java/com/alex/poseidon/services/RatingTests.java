@@ -1,6 +1,6 @@
-/*package com.alex.poseidon.services;
+package com.alex.poseidon.services;
 
-import com.alex.poseidon.models.Rating;
+import com.alex.poseidon.models.RatingModel;
 import com.alex.poseidon.repositories.RatingRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,32 +16,40 @@ import java.util.Optional;
 @SpringBootTest
 public class RatingTests {
 
-	@Autowired
-	private RatingRepository ratingRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
-	@Test
-	public void ratingTest() {
-		Rating rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+    @Test
+    public void saveUpdateFindDeleteRatingShouldPerformTheirActionsAndSucceed() {
+        RatingModel rating = new RatingModel();
+        rating.setId(1);
+        rating.setMoodysRating("Moodys Rating");
+        rating.setSandPRating("Sand PRating");
+        rating.setFitchRating("Fitch Rating");
+        rating.setOrderNumber(10);
 
-		// Save
-		rating = ratingRepository.save(rating);
-		Assert.assertNotNull(rating.getId());
-		Assert.assertTrue(rating.getOrderNumber() == 10);
+        // Save
+        rating = ratingRepository.save(rating);
+        Assert.assertNotNull(rating.getId());
+        Assert.assertTrue(rating.getOrderNumber() == 10);
 
-		// Update
-		rating.setOrderNumber(20);
-		rating = ratingRepository.save(rating);
-		Assert.assertTrue(rating.getOrderNumber() == 20);
+        // Update
+        rating.setOrderNumber(20);
+        rating = ratingRepository.save(rating);
+        Assert.assertTrue(rating.getOrderNumber() == 20);
 
-		// Find
-		List<Rating> listResult = ratingRepository.findAll();
-		Assert.assertTrue(listResult.size() > 0);
+        // Find
+        List<RatingModel> listResult = ratingRepository.findAll();
+        Assert.assertTrue(listResult.size() > 0);
 
-		// Delete
-		Integer id = rating.getId();
-		ratingRepository.delete(rating);
-		Optional<Rating> ratingList = ratingRepository.findById(id);
-		Assert.assertFalse(ratingList.isPresent());
-	}
+        RatingModel ratingResult = ratingRepository.findById(rating.getId());
+        Assert.assertTrue(ratingResult.getOrderNumber() == 20);
+        Assert.assertTrue(ratingResult.getSandPRating().equals("Sand PRating"));
+
+        // Delete
+        Integer id = rating.getId();
+        ratingRepository.delete(rating);
+        Optional<RatingModel> ratingList = ratingRepository.findById(id);
+        Assert.assertFalse(ratingList.isPresent());
+    }
 }
-*/
