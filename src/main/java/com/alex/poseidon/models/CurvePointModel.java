@@ -1,10 +1,12 @@
 package com.alex.poseidon.models;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Entity
@@ -19,9 +21,10 @@ public class CurvePointModel {
     @NotNull(message = "Curve point Id is mandatory")
     @Column(name = "curve_id")
     private int curveId;
-    @FutureOrPresent(message = "The as of date should be a date in the future or now")
+    @FutureOrPresent(message = "The date should be a date in the future or now")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "as_of_date")
-    private Timestamp asOfDate;
+    private Date asOfDate;
     @NotNull(message = "Term is mandatory")
     @PositiveOrZero(message = "Term should be a decimal number and greater than zero")
     @Column(name = "term")
@@ -30,8 +33,9 @@ public class CurvePointModel {
     @PositiveOrZero(message = "Value should be a decimal number and greater than zero")
     @Column(name = "value")
     private Double value;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "creation_date")
-    private Timestamp creationDate;
+    private Date creationDate;
 
     public int getId() {
         return id;
@@ -49,11 +53,11 @@ public class CurvePointModel {
         this.curveId = curveId;
     }
 
-    public Timestamp getAsOfDate() {
+    public Date getAsOfDate() {
         return asOfDate;
     }
 
-    public void setAsOfDate(Timestamp asOfDate) {
+    public void setAsOfDate(Date asOfDate) {
         this.asOfDate = asOfDate;
     }
 
@@ -73,11 +77,11 @@ public class CurvePointModel {
         this.value = value;
     }
 
-    public Timestamp getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 }

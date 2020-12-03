@@ -2,6 +2,7 @@ package com.alex.poseidon.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,25 +11,33 @@ public class RuleNameModel {
 
     @Id
     @Column(name = "id")
-    Integer id;
+    private int id;
+    @NotBlank(message= "Rule name is mandatory")
+    @Size(max=125, message = "The size of the name must be of maximum 125 characters")
     @Column(name = "name")
-    String name;
+    private String name;
+    @NotBlank(message = "Description is mandatory")
+    @Size(max=125, message = "The size of the description must be of maximum 125 characters")
     @Column(name = "description")
-    String description;
+    private String description;
+    @Size(max=125)
     @Column(name = "json")
-    String json;
+    private String json;
+    @Size(max=512)
     @Column(name = "template")
-    String template;
+    private String template;
+    @Size(max=125)
     @Column(name = "sql_str")
-    String sqlStr;
+    private String sqlStr;
+    @Size(max=125)
     @Column(name = "sql_part")
-    String sqlPart;
+    private String sqlPart;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

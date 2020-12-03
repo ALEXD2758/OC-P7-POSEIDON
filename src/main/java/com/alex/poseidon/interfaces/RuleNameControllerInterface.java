@@ -3,10 +3,8 @@ package com.alex.poseidon.interfaces;
 import com.alex.poseidon.models.RuleNameModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -15,18 +13,20 @@ public interface RuleNameControllerInterface {
     String home(Model model);
 
     @GetMapping("/ruleName/add")
-    String addRuleForm(RuleNameModel bid);
+    String addRuleForm(Model model);
 
     @PostMapping("/ruleName/validate")
-    String validate(@Valid RuleNameModel ruleName, BindingResult result, Model model);
+    String validate(@Valid @ModelAttribute("ruleName") RuleNameModel ruleName, BindingResult result,
+                    Model model, RedirectAttributes ra);
 
     @GetMapping("/ruleName/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/ruleName/update/{id}")
-    String updateRuleName(@PathVariable("id") Integer id, @Valid RuleNameModel ruleName,
-                          BindingResult result, Model model);
+    String updateRuleName(@PathVariable("id") int id,
+                          @Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
+                          BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/ruleName/delete/{id}")
-    String deleteRuleName(@PathVariable("id") Integer id, Model model);
+    String deleteRuleName(@PathVariable("id") int id, Model model, RedirectAttributes ra);
 }

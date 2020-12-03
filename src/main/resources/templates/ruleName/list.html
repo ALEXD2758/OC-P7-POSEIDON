@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<title>Home</title>
-<link rel="stylesheet" href="../../css/bootstrap.min.css" >
+	<meta charset="utf-8"/>
+	<title>Home</title>
+	<link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
 <div class="container">
@@ -24,23 +24,43 @@
 		</div>
 	</div>
 	<div class="row"><h2>Rule List</h2></div>
+	<p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}" th:text="${errorDeleteMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}" th:text="${successDeleteMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}" th:text="${successUpdateMessage}"></p>
+	<p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}" th:text="${successSaveMessage}"></p>
 	<div class="row">
 		<a href="/ruleName/add" class="btn btn-primary btn-sm">Add New</a>
 		<table class="table table-bordered">
 			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th>json</th>
-					<th>template</th>
-					<th>sql</th>
-					<th>sqlPart</th>
-					<th>Action</th>
-				</tr>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>json</th>
+				<th>template</th>
+				<th>sql</th>
+				<th>sqlPart</th>
+				<th>Action</th>
+			</tr>
 			</thead>
 			<tbody>
-			<!-- TODO: Show all RuleName to the table, the Action column will have Edit & Delete buttons -->
+			<tr th:if="${ruleName.empty}">
+				<td colspan="2"> No rating available </td>
+			</tr>
+			<tr th:each="ruleNameModel : ${ruleName}">
+
+				<td><span th:text="${ruleNameModel.id}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.name}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.description}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.json}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.template}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.sqlStr}"> N/A </span></td>
+				<td><span th:text="${ruleNameModel.sqlPart}"> N/A </span></td>
+				<td style="width: 15%" class="text-center">
+					<a th:href="@{/ruleName/update/{id}(id=${ruleNameModel.id})}">Edit</a>&nbsp;|&nbsp;
+					<a th:href="@{/ruleName/delete/{id}(id=${ruleNameModel.id})}" onclick="return confirm('Are you sure you want to delete this rule name?')">Delete</a>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>
