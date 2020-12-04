@@ -1,7 +1,8 @@
-/*package com.alex.poseidon.services;
+package com.alex.poseidon.services;
 
-import com.alex.poseidon.models.Trade;
+import com.alex.poseidon.models.TradeModel;
 import com.alex.poseidon.repositories.TradeRepository;
+import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,32 +17,47 @@ import java.util.Optional;
 @SpringBootTest
 public class TradeTests {
 
-	@Autowired
-	private TradeRepository tradeRepository;
+    @Autowired
+    private TradeRepository tradeRepository;
 
-	@Test
-	public void tradeTest() {
-		Trade trade = new Trade("Trade Account", "Type");
+    @Test
+    public void saveUpdateFindDeleteTradeShouldPerformTheirActionsAndSucceed() {
 
-		// Save
-		trade = tradeRepository.save(trade);
-		Assert.assertNotNull(trade.getTradeId());
-		Assert.assertTrue(trade.getAccount().equals("Trade Account"));
+        long millis= 1706858478726L;
+        LocalDate date = new LocalDate(millis);
+        LocalDate date1 = new LocalDate(1706858478726L);
 
-		// Update
-		trade.setAccount("Trade Account Update");
-		trade = tradeRepository.save(trade);
-		Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
+        TradeModel trade = new TradeModel();
+        trade.setTradeId(28);
+        trade.setAccount("Trade Account");
+        trade.setType("Type");
+        trade.setCreationName("Creation Name");
+        trade.setTradeDate(date);
+        trade.setCreationDate(date);
 
-		// Find
-		List<Trade> listResult = tradeRepository.findAll();
-		Assert.assertTrue(listResult.size() > 0);
+        // Save
+        trade = tradeRepository.save(trade);
+        Assert.assertNotNull(trade.getTradeId());
+        Assert.assertTrue(trade.getAccount().equals("Trade Account"));
+        Assert.assertTrue(trade.getCreationDate().compareTo(date1) == 0);
 
-		// Delete
-		Integer id = trade.getTradeId();
-		tradeRepository.delete(trade);
-		Optional<Trade> tradeList = tradeRepository.findById(id);
-		Assert.assertFalse(tradeList.isPresent());
-	}
+        // Update
+        trade.setAccount("Trade Account Update");
+        trade = tradeRepository.save(trade);
+        Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
+
+        // Find
+        List<TradeModel> listResult = tradeRepository.findAll();
+        Assert.assertTrue(listResult.size() > 0);
+
+        TradeModel tradeResult = tradeRepository.findById(trade.getTradeId());
+        Assert.assertTrue(tradeResult.getAccount().equals("Trade Account Update"));
+        Assert.assertTrue(tradeResult.getType().equals("Type"));
+
+        // Delete
+        Integer id = trade.getTradeId();
+        tradeRepository.delete(trade);
+        Optional<TradeModel> tradeList = tradeRepository.findById(id);
+        Assert.assertFalse(tradeList.isPresent());
+    }
 }
-*/

@@ -1,9 +1,11 @@
 package com.alex.poseidon.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "trade")
@@ -11,53 +13,84 @@ public class TradeModel {
 
     @Id
     @Column(name = "trade_id")
-    Integer tradeId;
+    private int tradeId;
+    @NotBlank(message = "Account is mandatory")
+    @Size(max=30, message = "The account name must be of maximum 30 characters")
     @Column(name = "account")
-    String account;
+    private String account;
+    @Size(max=30, message = "The type must be of maximum 30 characters")
+    @NotBlank(message = "Type is mandatory")
     @Column(name = "type")
-    String type;
+    private String type;
+    @PositiveOrZero(message = "Buy Quantity must be greater than or equal to zero")
     @Column(name = "buy_quantity")
-    Double buyQuantity;
+    private Double buyQuantity;
+    @PositiveOrZero(message = "Sell Quantity must be greater than or equal to zero")
     @Column(name = "sell_quantity")
-    Double sellQuantity;
+    private Double sellQuantity;
+    @PositiveOrZero(message = "Buy price must be greater than or equal to zero")
     @Column(name = "buy_price")
-    Double buyPrice;
+    private Double buyPrice;
+    @PositiveOrZero(message = "Sell price must be greater than or equal to zero")
     @Column(name = "sell_price")
-    Double sellPrice;
+    private Double sellPrice;
+    @Size(max=125, message = "The benchmark must be of maximum 125 characters")
     @Column(name = "benchmark")
-    String benchmark;
+    private String benchmark;
+    @NotNull(message = "Trade date is mandatory")
+    @FutureOrPresent(message = "The trade date should be a date in the future or now")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "trade_date")
-    Timestamp tradeDate;
+    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
+    private LocalDate tradeDate;
+    @Size(max=125, message = "The security must be of maximum 125 characters")
     @Column(name = "security")
-    String security;
+    private String security;
+    @Size(max=10, message = "The status name must be of maximum 10 characters")
     @Column(name = "status")
-    String status;
+    private String status;
+    @Size(max=125, message = "The trader name must be of maximum 125 characters")
     @Column(name = "trader")
-    String trader;
+    private String trader;
+    @Size(max=125, message = "The account name must be of maximum 125 characters")
     @Column(name = "book")
-    String book;
+    private String book;
+    @NotBlank(message = "Creation Name is mandatory")
+    @Size(max=125, message = "The creation name must be of maximum 125 characters")
     @Column(name = "creation_name")
-    String creationName;
+    private String creationName;
+    @NotNull(message = "Creation date is mandatory")
+    @FutureOrPresent(message = "The date should be a date in the future or now")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "creation_date")
-    Timestamp creationDate;
+    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
+    private LocalDate creationDate;
+    @Size(max=125, message = "The revision name must be of maximum 125 characters")
     @Column(name = "revision_name")
-    String revisionName;
+    private String revisionName;
+    @FutureOrPresent(message = "The date should be a date in the future or now")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "revision_date")
-    Timestamp revisionDate;
+    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
+    private LocalDate revisionDate;
+    @Size(max=125, message = "The deal name must be of maximum 125 characters")
     @Column(name = "deal_name")
-    String dealName;
+    private String dealName;
+    @Size(max=125, message = "The deal type must be of maximum 125 characters")
     @Column(name = "deal_type")
-    String dealType;
+    private String dealType;
+    @Size(max=125, message = "The source list id must be of maximum 125 characters")
     @Column(name = "source_list_id")
-    String sourceListId;
+    private String sourceListId;
+    @Size(max=125, message = "The side name must be of maximum 125 characters")
     @Column(name = "side")
-    String side;
+    private String side;
 
-    public Integer getTradeId() {
+    public int getTradeId() {
         return tradeId;
     }
 
-    public void setTradeId(Integer tradeId) {
+    public void setTradeId(int tradeId) {
         this.tradeId = tradeId;
     }
 
@@ -117,11 +150,11 @@ public class TradeModel {
         this.benchmark = benchmark;
     }
 
-    public Timestamp getTradeDate() {
+    public LocalDate getTradeDate() {
         return tradeDate;
     }
 
-    public void setTradeDate(Timestamp tradeDate) {
+    public void setTradeDate(LocalDate tradeDate) {
         this.tradeDate = tradeDate;
     }
 
@@ -165,11 +198,11 @@ public class TradeModel {
         this.creationName = creationName;
     }
 
-    public Timestamp getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -181,11 +214,11 @@ public class TradeModel {
         this.revisionName = revisionName;
     }
 
-    public Timestamp getRevisionDate() {
+    public LocalDate getRevisionDate() {
         return revisionDate;
     }
 
-    public void setRevisionDate(Timestamp revisionDate) {
+    public void setRevisionDate(LocalDate revisionDate) {
         this.revisionDate = revisionDate;
     }
 
@@ -220,6 +253,4 @@ public class TradeModel {
     public void setSide(String side) {
         this.side = side;
     }
-
-
 }

@@ -3,30 +3,29 @@ package com.alex.poseidon.interfaces;
 import com.alex.poseidon.models.TradeModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 public interface TradeControllerInterface {
-    @RequestMapping("/trade/list")
+    @GetMapping("/trade/list")
     String home(Model model);
 
     @GetMapping("/trade/add")
-    String addUser(TradeModel bid);
+    String addTradeForm(Model model);
 
     @PostMapping("/trade/validate")
-    String validate(@Valid TradeModel trade, BindingResult result, Model model);
+    String validate(@Valid @ModelAttribute("trade") TradeModel trade, BindingResult result, Model model
+            , RedirectAttributes ra);
 
     @GetMapping("/trade/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/trade/update/{id}")
-    String updateTrade(@PathVariable("id") Integer id, @Valid TradeModel trade,
-                       BindingResult result, Model model);
+    String updateTrade(@PathVariable("id") int id, @Valid @ModelAttribute("trade") TradeModel trade,
+                       BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/trade/delete/{id}")
-    String deleteTrade(@PathVariable("id") Integer id, Model model);
+    String deleteTrade(@PathVariable("id") int id, Model model, RedirectAttributes ra);
 }
