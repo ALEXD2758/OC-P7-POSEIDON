@@ -1,22 +1,28 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.TradeControllerInterface;
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.TradeModel;
+import com.alex.poseidon.services.BidListService;
 import com.alex.poseidon.services.TradeService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class TradeController implements TradeControllerInterface {
@@ -54,7 +60,7 @@ public class TradeController implements TradeControllerInterface {
     @GetMapping("/trade/add")
     public String addTradeForm(Model model) {
 
-        LocalDate dateDebut = tradeService.getCreationDateForDateFields();
+        LocalDateTime dateDebut = tradeService.getCreationDateForDateFields();
 
         TradeModel trade = new TradeModel();
         trade.setCreationDate(dateDebut);
@@ -83,6 +89,7 @@ public class TradeController implements TradeControllerInterface {
             , RedirectAttributes ra) {
 
         if (!result.hasErrors()) {
+
             tradeService.saveTrade(trade);
             ra.addFlashAttribute("successSaveMessage", "Your trade was successfully added");
             model.addAttribute("trade", tradeService.getAllTrades());
@@ -137,6 +144,7 @@ public class TradeController implements TradeControllerInterface {
             logger.info("POST /trade/update : NOK");
             return "/trade/list";
         }
+        //  trade.setCreationDate(tradeService.getTimestampForFieldCreationDate());
         tradeService.saveTrade(trade);
         ra.addFlashAttribute("successUpdateMessage", "Your trade was successfully updated");
         model.addAttribute("trade", tradeService.getAllTrades());
@@ -168,7 +176,7 @@ public class TradeController implements TradeControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the trade");
             logger.info("/trade/delete : NOK " + "Invalid trade ID " + id);
-            throw new IllegalArgumentException("Invalid trade ID " + id);
+
         }
         return "redirect:/trade/list";
     }

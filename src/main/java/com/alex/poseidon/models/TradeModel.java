@@ -2,6 +2,7 @@ package com.alex.poseidon.models;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -39,10 +40,9 @@ public class TradeModel {
     private String benchmark;
     @NotNull(message = "Trade date is mandatory")
     @FutureOrPresent(message = "The trade date should be a date in the future or now")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "trade_date")
-    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private LocalDate tradeDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime tradeDate;
     @Size(max=125, message = "The security must be of maximum 125 characters")
     @Column(name = "security")
     private String security;
@@ -63,16 +63,16 @@ public class TradeModel {
     @FutureOrPresent(message = "The date should be a date in the future or now")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "creation_date")
-    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private LocalDate creationDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime creationDate;
     @Size(max=125, message = "The revision name must be of maximum 125 characters")
     @Column(name = "revision_name")
     private String revisionName;
     @FutureOrPresent(message = "The date should be a date in the future or now")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "revision_date")
-    @Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private LocalDate revisionDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime revisionDate;
     @Size(max=125, message = "The deal name must be of maximum 125 characters")
     @Column(name = "deal_name")
     private String dealName;
@@ -150,11 +150,11 @@ public class TradeModel {
         this.benchmark = benchmark;
     }
 
-    public LocalDate getTradeDate() {
+    public LocalDateTime getTradeDate() {
         return tradeDate;
     }
 
-    public void setTradeDate(LocalDate tradeDate) {
+    public void setTradeDate(LocalDateTime tradeDate) {
         this.tradeDate = tradeDate;
     }
 
@@ -198,11 +198,11 @@ public class TradeModel {
         this.creationName = creationName;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -214,11 +214,11 @@ public class TradeModel {
         this.revisionName = revisionName;
     }
 
-    public LocalDate getRevisionDate() {
+    public LocalDateTime getRevisionDate() {
         return revisionDate;
     }
 
-    public void setRevisionDate(LocalDate revisionDate) {
+    public void setRevisionDate(LocalDateTime revisionDate) {
         this.revisionDate = revisionDate;
     }
 

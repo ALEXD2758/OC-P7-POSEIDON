@@ -1,11 +1,16 @@
 package com.alex.poseidon.services;
 
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.TradeModel;
+import com.alex.poseidon.repositories.CurvePointRepository;
 import com.alex.poseidon.repositories.TradeRepository;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,7 +26,7 @@ public class TradeService {
     public boolean checkIfTradeIdExists(int id) {
         return tradeRep.existsById(id);
     }
-    
+
     public List<TradeModel> getAllTrades() {
         return tradeRep.findAll();
     }
@@ -42,9 +47,9 @@ public class TradeService {
      *
      * @return a timestamp of the current time and date
      */
-    public LocalDate getCreationDateForDateFields() {
+    public LocalDateTime getCreationDateForDateFields() {
         long millis=System.currentTimeMillis();
-        LocalDate date = new LocalDate(millis);
+        LocalDateTime date = new LocalDateTime(millis);
 
         return date;
     }
