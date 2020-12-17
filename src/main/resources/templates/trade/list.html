@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<title>Home</title>
-<link rel="stylesheet" href="../../css/bootstrap.min.css" >
+	<meta charset="utf-8"/>
+	<title>Home</title>
+	<link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
 <div class="container">
@@ -28,16 +28,29 @@
 		<a href="/trade/add" class="btn btn-primary btn-sm">Add New</a>
 		<table class="table table-bordered">
 			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Account</th>
-					<th>Type</th>
-					<th>Buy Quantity</th>
-					<th>Action</th>
-				</tr>
+			<tr>
+				<th>Id</th>
+				<th>Account</th>
+				<th>Type</th>
+				<th>Buy Quantity</th>
+				<th>Action</th>
+			</tr>
 			</thead>
 			<tbody>
-			<!-- TODO: Show all Trade to the table, the Action column will have Edit & Delete buttons -->
+			<tr th:if="${trade.empty}">
+				<td colspan="2"> No trade available </td>
+			</tr>
+			<tr th:each="tradeModel : ${trade}">
+
+				<td><span th:text="${tradeModel.tradeId}"> N/A </span></td>
+				<td><span th:text="${tradeModel.account}"> N/A </span></td>
+				<td><span th:text="${tradeModel.type}"> N/A </span></td>
+				<td><span th:text="${tradeModel.buyQuantity}"> N/A </span></td>
+				<td style="width: 15%" class="text-center">
+					<a th:href="@{/trade/update/{id}(id=${tradeModel.tradeId})}">Edit</a>&nbsp;|&nbsp;
+					<a th:href="@{/trade/delete/{id}(id=${tradeModel.tradeId})}" onclick="return confirm('Are you sure you want to delete this trade?')">Delete</a>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>

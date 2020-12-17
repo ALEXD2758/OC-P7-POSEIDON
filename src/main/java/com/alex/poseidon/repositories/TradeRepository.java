@@ -1,6 +1,5 @@
 package com.alex.poseidon.repositories;
 
-import com.alex.poseidon.models.RuleNameModel;
 import com.alex.poseidon.models.TradeModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +10,6 @@ public interface TradeRepository extends JpaRepository<TradeModel, Integer> {
     List<TradeModel> findAll();
 
     TradeModel findById(int id);
+
+    boolean existsByTradeId(int tradeId);
 }

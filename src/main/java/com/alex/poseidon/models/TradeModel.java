@@ -41,6 +41,7 @@ public class TradeModel {
     @NotNull(message = "Trade date is mandatory")
     @FutureOrPresent(message = "The trade date should be a date in the future or now")
     @Column(name = "trade_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime tradeDate;
     @Size(max=125, message = "The security must be of maximum 125 characters")
@@ -61,7 +62,7 @@ public class TradeModel {
     private String creationName;
     @NotNull(message = "Creation date is mandatory")
     @FutureOrPresent(message = "The date should be a date in the future or now")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "creation_date")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime creationDate;
@@ -69,7 +70,7 @@ public class TradeModel {
     @Column(name = "revision_name")
     private String revisionName;
     @FutureOrPresent(message = "The date should be a date in the future or now")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "revision_date")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime revisionDate;

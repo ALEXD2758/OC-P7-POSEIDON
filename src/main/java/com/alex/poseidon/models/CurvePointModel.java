@@ -1,12 +1,11 @@
 package com.alex.poseidon.models;
 
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.sql.Timestamp;
-import java.util.Date;
 
 
 @Entity
@@ -22,9 +21,10 @@ public class CurvePointModel {
     @Column(name = "curve_id")
     private int curveId;
     @FutureOrPresent(message = "The date should be a date in the future or now")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "as_of_date")
-    private Date asOfDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime asOfDate;
     @NotNull(message = "Term is mandatory")
     @PositiveOrZero(message = "Term should be a decimal number and greater than zero")
     @Column(name = "term")
@@ -33,9 +33,10 @@ public class CurvePointModel {
     @PositiveOrZero(message = "Value should be a decimal number and greater than zero")
     @Column(name = "value")
     private Double value;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "creation_date")
-    private Date creationDate;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime creationDate;
 
     public int getId() {
         return id;
@@ -53,11 +54,11 @@ public class CurvePointModel {
         this.curveId = curveId;
     }
 
-    public Date getAsOfDate() {
+    public LocalDateTime getAsOfDate() {
         return asOfDate;
     }
 
-    public void setAsOfDate(Date asOfDate) {
+    public void setAsOfDate(LocalDateTime asOfDate) {
         this.asOfDate = asOfDate;
     }
 
@@ -77,11 +78,11 @@ public class CurvePointModel {
         this.value = value;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 }

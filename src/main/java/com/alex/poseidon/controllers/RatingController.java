@@ -88,7 +88,7 @@ public class RatingController implements RatingControllerInterface {
     /**
      * Render the view rating/update with the chosen id in a model attribute
      * with the associated data of the chosen ID
-     * Add attribute rating to the model, containing all ratings available in DB
+     * Add attribute rating to the model
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
@@ -99,11 +99,14 @@ public class RatingController implements RatingControllerInterface {
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
+            if (ratingService.checkIfIdExists(id) == false) {
+                logger.info("GET /rating/update : Non existent id");
+                return "redirect:/rating/list";
+            }
             model.addAttribute("rating", ratingService.getRatingById(id));
             logger.info("GET /rating/update : OK");
         } catch (Exception e) {
             logger.info("GET /rating/delete : NOK " + "Invalid rating ID " + id);
-            throw new IllegalArgumentException("Invalid rating ID " + id);
         }
         return "rating/update";
     }
@@ -125,6 +128,10 @@ public class RatingController implements RatingControllerInterface {
     public String updateRating(@PathVariable("id") int id,
                                @Valid @ModelAttribute("rating") RatingModel rating,
                                BindingResult result, Model model, RedirectAttributes ra) {
+        if (ratingService.checkIfIdExists(id) == false) {
+            logger.info("GET /rating/update : Non existent id");
+            return "redirect:/rating/list";
+        }
         if (result.hasErrors()) {
             logger.info("POST /rating/update : NOK");
             return "/rating/list";
@@ -152,6 +159,10 @@ public class RatingController implements RatingControllerInterface {
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {
+            if (ratingService.checkIfIdExists(id) == false) {
+                logger.info("GET /rating/delete : Non existent id");
+                return "redirect:/rating/list";
+            }
             ratingService.deleteRatingById(id);
             model.addAttribute("rating", ratingService.getAllRatings());
             ra.addFlashAttribute("successDeleteMessage", "This rating was successfully deleted");
@@ -160,7 +171,6 @@ public class RatingController implements RatingControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the rating");
             logger.info("/rating/delete : NOK " + "Invalid rating ID " + id);
-            throw new IllegalArgumentException("Invalid rating ID " + id);
         }
         return "redirect:/rating/list";
     }

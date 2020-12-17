@@ -3,6 +3,7 @@ package com.alex.poseidon.services;
 import com.alex.poseidon.models.TradeModel;
 import com.alex.poseidon.repositories.TradeRepository;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TradeTests {
-/*
+
     @Autowired
     private TradeRepository tradeRepository;
 
@@ -24,8 +25,8 @@ public class TradeTests {
     public void saveUpdateFindDeleteTradeShouldPerformTheirActionsAndSucceed() {
 
         long millis= 1706858478726L;
-        LocalDate date = new LocalDate(millis);
-        LocalDate date1 = new LocalDate(1706858478726L);
+        LocalDateTime date = new LocalDateTime(millis);
+        LocalDateTime date1 = new LocalDateTime(1706858478726L);
 
         TradeModel trade = new TradeModel();
         trade.setTradeId(28);
@@ -33,7 +34,7 @@ public class TradeTests {
         trade.setType("Type");
         trade.setCreationName("Creation Name");
         trade.setTradeDate(date);
-        trade.setCreationDate(date);
+        trade.setCreationDate(date1);
 
         // Save
         trade = tradeRepository.save(trade);
@@ -60,5 +61,4 @@ public class TradeTests {
         Optional<TradeModel> tradeList = tradeRepository.findById(id);
         Assert.assertFalse(tradeList.isPresent());
     }
-*/
 }

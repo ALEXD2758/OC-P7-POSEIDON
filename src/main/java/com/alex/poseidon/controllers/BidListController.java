@@ -2,17 +2,17 @@ package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.BidListControllerInterface;
 import com.alex.poseidon.models.BidListModel;
-import com.alex.poseidon.models.UserModel;
-import com.alex.poseidon.repositories.BidListRepository;
 import com.alex.poseidon.services.BidListService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -20,8 +20,7 @@ import javax.validation.Valid;
 
 @Controller
 public class BidListController implements BidListControllerInterface {
-
-    private static final Logger logger = LogManager.getLogger("CurveController");
+    private static final Logger logger = LogManager.getLogger("BidListController");
 
     @Autowired
     BidListService bidListService;
@@ -38,7 +37,7 @@ public class BidListController implements BidListControllerInterface {
     @GetMapping("/bidList/list")
     public String home(Model model) {
         model.addAttribute("bidList", bidListService.getAllBids());
-        logger.info("GET /bidList/list : OK");
+        logger.info("bidList/list : OK");
         return "bidList/list";
     }
 
@@ -63,7 +62,7 @@ public class BidListController implements BidListControllerInterface {
      * Add Flash Attribute with success message
      * Add attribute BidList to the model, containing all Bids available in DB
      *
-     * @param bid the BidListModel with annotation @Valid (for the possible constraints)
+     * @param bidList the BidListModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect scenarios
@@ -74,12 +73,11 @@ public class BidListController implements BidListControllerInterface {
      */
     @Override
     @PostMapping("/bidList/validate")
-    public String validate(@Valid @ModelAttribute("bidList") BidListModel bid, BindingResult result, Model model,
+    public String validate(@Valid @ModelAttribute("bidList") BidListModel bidList, BindingResult result, Model model,
                            RedirectAttributes ra) {
         if (!result.hasErrors()) {
-            bidListService.saveBid(bid);
+            bidListService.saveBid(bidList);
             ra.addFlashAttribute("successSaveMessage", "Your bid was successfully added");
-            model.addAttribute("bidList", bidListService.getAllBids());
 
             logger.info("POST /bidList/validate : OK");
             return "redirect:/bidList/list";
@@ -91,7 +89,7 @@ public class BidListController implements BidListControllerInterface {
     /**
      * Render the view bidList/update with the chosen bidListId in a model attribute
      * with the associated data of the chosen ID
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute BidList to the model
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
@@ -102,11 +100,14 @@ public class BidListController implements BidListControllerInterface {
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
+            if (bidListService.checkIfIdExists(id) == false) {
+                logger.info("GET /bidList/update : Non existent id");
+                return "redirect:/bidList/list";
+            }
             model.addAttribute("bidList", bidListService.getBidByBidListId(id));
             logger.info("GET /bidList/update : OK");
         } catch (Exception e) {
             logger.info("/bidList/delete : NOK " + "Invalid bidList ID " + id);
-            throw new IllegalArgumentException("Invalid bidlist Id" + id);
         }
         return "bidList/update";
     }
@@ -127,10 +128,13 @@ public class BidListController implements BidListControllerInterface {
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") int id, @Valid @ModelAttribute("bidList") BidListModel bidList,
                             BindingResult result, Model model, RedirectAttributes ra) {
+        if (bidListService.checkIfIdExists(id) == false) {
+            logger.info("GET /bidList/update : Non existent id");
+            return "redirect:/bidList/list";
+        }
         if (!result.hasErrors()) {
             bidListService.saveBid(bidList);
             ra.addFlashAttribute("successUpdateMessage", "Your bid was successfully updated");
-            model.addAttribute("bidList", bidListService.getAllBids());
 
             logger.info("POST /bidList/update : OK");
             return "redirect:/bidList/list";
@@ -154,6 +158,10 @@ public class BidListController implements BidListControllerInterface {
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {
+            if (bidListService.checkIfIdExists(id) == false) {
+                logger.info("GET /bidList/delete : Non existent id");
+                return "redirect:/bidList/list";
+            }
             bidListService.deleteBidById(id);
             model.addAttribute("bidList", bidListService.getAllBids());
             ra.addFlashAttribute("successDeleteMessage", "This bid was successfully deleted");
@@ -162,7 +170,6 @@ public class BidListController implements BidListControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the bid");
             logger.info("/bidList/delete : NOK " + "Invalid bidList ID " + id);
-            throw new IllegalArgumentException("Invalid bid Id" + id);
         }
         return "redirect:/bidList/list";
     }

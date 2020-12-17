@@ -59,7 +59,6 @@ public class TradeController implements TradeControllerInterface {
     @Override
     @GetMapping("/trade/add")
     public String addTradeForm(Model model) {
-
         LocalDateTime dateDebut = tradeService.getCreationDateForDateFields();
 
         TradeModel trade = new TradeModel();
@@ -87,9 +86,7 @@ public class TradeController implements TradeControllerInterface {
     @PostMapping("/trade/validate")
     public String validate(@Valid @ModelAttribute("trade") TradeModel trade, BindingResult result, Model model
             , RedirectAttributes ra) {
-
         if (!result.hasErrors()) {
-
             tradeService.saveTrade(trade);
             ra.addFlashAttribute("successSaveMessage", "Your trade was successfully added");
             model.addAttribute("trade", tradeService.getAllTrades());
@@ -115,11 +112,14 @@ public class TradeController implements TradeControllerInterface {
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
+            if (tradeService.checkIfTradeIdExists(id) == false) {
+                logger.info("GET /trade/update : Non existent id");
+                return "redirect:/trade/list";
+            }
             model.addAttribute("trade", tradeService.getTradeById(id));
             logger.info("GET /trade/update : OK");
         } catch (Exception e) {
             logger.info("GET /trade/delete : NOK " + "Invalid trade ID " + id);
-            throw new IllegalArgumentException("Invalid trade ID " + id);
         }
         return "trade/update";
     }
@@ -140,11 +140,14 @@ public class TradeController implements TradeControllerInterface {
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") int id, @Valid @ModelAttribute("trade") TradeModel trade,
                               BindingResult result, Model model, RedirectAttributes ra) {
+        if (tradeService.checkIfTradeIdExists(id) == false) {
+            logger.info("POST /trade/update : Non existent id");
+            return "redirect:/trade/list";
+        }
         if (result.hasErrors()) {
             logger.info("POST /trade/update : NOK");
             return "/trade/list";
         }
-        //  trade.setCreationDate(tradeService.getTimestampForFieldCreationDate());
         tradeService.saveTrade(trade);
         ra.addFlashAttribute("successUpdateMessage", "Your trade was successfully updated");
         model.addAttribute("trade", tradeService.getAllTrades());
@@ -168,6 +171,10 @@ public class TradeController implements TradeControllerInterface {
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {
+            if (tradeService.checkIfTradeIdExists(id) == false) {
+                logger.info("GET /trade/delete : Non existent id");
+                return "redirect:/trade/list";
+            }
             tradeService.deleteTradeById(id);
             model.addAttribute("trade", tradeService.getAllTrades());
             ra.addFlashAttribute("successDeleteMessage", "This trade was successfully deleted");
@@ -176,7 +183,6 @@ public class TradeController implements TradeControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the trade");
             logger.info("/trade/delete : NOK " + "Invalid trade ID " + id);
-
         }
         return "redirect:/trade/list";
     }
