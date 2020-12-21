@@ -3,7 +3,6 @@ package com.alex.poseidon.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "rulename")

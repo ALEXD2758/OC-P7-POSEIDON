@@ -75,7 +75,7 @@ public class CurveController implements CurveControllerInterface {
     public String validate(@Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint, BindingResult result,
                            Model model, RedirectAttributes ra) {
         if (!result.hasErrors()) {
-            curvePoint.setCreationDate(curvePointService.getTimestampForFieldCreationDate());
+            curvePoint.setCreationDate(curvePointService.getDateForFieldCreationDate());
             curvePointService.saveCurvePoint(curvePoint);
             ra.addFlashAttribute("successSaveMessage", "Your curve point was successfully added");
             model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
@@ -90,7 +90,7 @@ public class CurveController implements CurveControllerInterface {
     /**
      * Render the view curvePoint/update with the chosen id in a model attribute
      * with the associated data of the chosen id
-     * Add attribute CurvePoint to the model, containing all curve points available in DB
+     * Add attribute CurvePoint to the model
      *
      * @param id the int of the id chosen by the user
      * @param model the Model Interface, to add attributes to it
@@ -101,11 +101,14 @@ public class CurveController implements CurveControllerInterface {
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
+            if (curvePointService.checkIfIdExists(id) == false) {
+                logger.info("GET /curvePoint/update : Non existent id");
+                return "redirect:/curvePoint/list";
+            }
             model.addAttribute("curvePoint", curvePointService.getCurvePointById(id));
             logger.info("GET /curvePoint/update : OK");
         } catch (Exception e) {
             logger.info("/curvePoint/delete : NOK " + "Invalid curve point ID " + id);
-            throw new IllegalArgumentException("Invalid curve point ID " + id);
         }
         return "curvePoint/update";
     }
@@ -126,12 +129,16 @@ public class CurveController implements CurveControllerInterface {
     @PostMapping("/curvePoint/update/{id}")
     public String updateCurvePoint(@PathVariable("id") int id,
                                    @Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint,
-                            BindingResult result, Model model, RedirectAttributes ra) {
+                                   BindingResult result, Model model, RedirectAttributes ra) {
+        if (curvePointService.checkIfIdExists(id) == false) {
+            logger.info("GET /curvePoint/update : Non existent id");
+            return "redirect:/curvePoint/list";
+        }
         if (result.hasErrors()) {
             logger.info("POST /curvePoint/update : NOK");
             return "/curvePoint/list";
         }
-        curvePoint.setCreationDate(curvePointService.getTimestampForFieldCreationDate());
+        curvePoint.setCreationDate(curvePointService.getDateForFieldCreationDate());
         curvePointService.saveCurvePoint(curvePoint);
         ra.addFlashAttribute("successUpdateMessage", "Your curve point was successfully updated");
         model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
@@ -155,6 +162,10 @@ public class CurveController implements CurveControllerInterface {
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteCurvePoint(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {
+            if (curvePointService.checkIfIdExists(id) == false) {
+                logger.info("GET /curvePoint/delete : Non existent id");
+                return "redirect:/curvePoint/list";
+            }
             curvePointService.deleteCurvePointById(id);
             model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
             ra.addFlashAttribute("successDeleteMessage", "This curve point was successfully deleted");
@@ -163,7 +174,6 @@ public class CurveController implements CurveControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the curve point");
             logger.info("/curvePoint/delete : NOK " + "Invalid curve point ID " + id);
-            throw new IllegalArgumentException("Invalid curve point ID " + id);
         }
         return "redirect:/curvePoint/list";
     }

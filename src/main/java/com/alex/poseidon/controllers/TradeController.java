@@ -1,128 +1,189 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.interfaces.TradeControllerInterface;
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.TradeModel;
 import com.alex.poseidon.services.BidListService;
+import com.alex.poseidon.services.TradeService;
+import javassist.NotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class TradeController implements TradeControllerInterface {
 
-    @Autowired
-    BidListService bidListService;
+    private static final Logger logger = LogManager.getLogger("TradeController");
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/list
-     * Adds attribute BidList to the model, containing all Bids available in DB
+    @Autowired
+    TradeService tradeService;
+
+    /**
+     * Render the view trade/list
+     * Adds attribute trade to the model, containing all trades available in DB
      *
      * @param model Model Interface, to add attributes to it
-     * @return a string to the address "bidList/list", returning the associated view
+     * @return a string to the address "trade/list", returning the associated view
      * with attribute
      */
     @Override
-    @RequestMapping("/trade/list")
-    public String home(Model model)
-    {
-        // TODO: find all Trade, add to model
+    @GetMapping("/trade/list")
+    public String home(Model model) {
+        model.addAttribute("trade", tradeService.getAllTrades());
+        logger.info("GET /trade/list : OK");
         return "trade/list";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/add
-     * Adds attribute BidList to the model, containing a new BidMidListModel
+    /**
+     * Render the view trade/add
+     * Adds attribute trade to the model, containing a new TradeModel
      *
      * @param model for the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/add", returning the associated view
+     * @return a string to the address "trade/add", returning the associated view
      * with attribute
      */
     @Override
     @GetMapping("/trade/add")
-    public String addUser(TradeModel bid) {
+    public String addTradeForm(Model model) {
+        LocalDateTime dateDebut = tradeService.getCreationDateForDateFields();
+
+        TradeModel trade = new TradeModel();
+        trade.setCreationDate(dateDebut);
+        model.addAttribute("trade", trade);
+        logger.info("GET /trade/add : OK");
         return "trade/add";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Save new Bid to the table bidlist if Bindingresult has no errors
+    /**
+     * Save new trade to the table trade if BindingResult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute trade to the model, containing all trades available in DB
      *
-     * @param bid the BidListModel with annotation @Valid (for the possible constraints)
+     * @param trade the TradeModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
-     * @param ra the RedirectAttributes to redirect attributes in redirect scenarios
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @param ra the RedirectAttributes to redirect attributes in redirect
+     * @return a string to the address "trade/list", returning the associated view,
      * with attributes if no errors in BindingResult
-     * @return a string to the address "bidList/add", returning the associated view,
+     * @return a string to the address "trade/add", returning the associated view,
      *  if there is an error in BindingResult
      */
     @Override
     @PostMapping("/trade/validate")
-    public String validate(@Valid TradeModel trade, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Trade list
+    public String validate(@Valid @ModelAttribute("trade") TradeModel trade, BindingResult result, Model model
+            , RedirectAttributes ra) {
+        if (!result.hasErrors()) {
+            tradeService.saveTrade(trade);
+            ra.addFlashAttribute("successSaveMessage", "Your trade was successfully added");
+            model.addAttribute("trade", tradeService.getAllTrades());
+
+            logger.info("POST /trade/validate : OK");
+            return "redirect:/trade/list";
+        }
+        logger.info("POST /trade/validate : NOK");
         return "trade/add";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Render the view bidList/update with the chosen bidListId in a model attribute
+    /**
+     * Render the view trade/update with the chosen id in a model attribute
      * with the associated data of the chosen ID
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute trade to the model
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
-     * @return a string to the address "bidList/update", returning the associated view
+     * @return a string to the address "trade/update", returning the associated view
      * with attribute (if no Exception)
      */
     @Override
     @GetMapping("/trade/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Trade by Id and to model then show to the form
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        try {
+            if (tradeService.checkIfTradeIdExists(id) == false) {
+                logger.info("GET /trade/update : Non existent id");
+                return "redirect:/trade/list";
+            }
+            model.addAttribute("trade", tradeService.getTradeById(id));
+            logger.info("GET /trade/update : OK");
+        } catch (Exception e) {
+            logger.info("GET /trade/delete : NOK " + "Invalid trade ID " + id);
+        }
         return "trade/update";
     }
 
-    /**TO BE MODIFIED WHILE WRITING THE METHOD
-     * Update existing Bid to the table bidlist if BindingResult has no errors
+    /**
+     * Update existing trade to the table trade if BindingResult has no errors
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute trade to the model, containing all trades available in DB
      *
-     * @param bidList the BidListModel with annotation @Valid (for the possible constraints)
+     * @param trade the TradeModel with annotation @Valid (for the possible constraints)
      * @param result to represent binding results
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "trade/list", returning the associated view,
      * with attributes
      */
     @Override
     @PostMapping("/trade/update/{id}")
-    public String updateTrade(@PathVariable("id") Integer id, @Valid TradeModel trade,
-                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Trade and return Trade list
+    public String updateTrade(@PathVariable("id") int id, @Valid @ModelAttribute("trade") TradeModel trade,
+                              BindingResult result, Model model, RedirectAttributes ra) {
+        if (tradeService.checkIfTradeIdExists(id) == false) {
+            logger.info("POST /trade/update : Non existent id");
+            return "redirect:/trade/list";
+        }
+        if (result.hasErrors()) {
+            logger.info("POST /trade/update : NOK");
+            return "/trade/list";
+        }
+        tradeService.saveTrade(trade);
+        ra.addFlashAttribute("successUpdateMessage", "Your trade was successfully updated");
+        model.addAttribute("trade", tradeService.getAllTrades());
+
+        logger.info("POST /trade/update : OK");
         return "redirect:/trade/list";
     }
 
-    /** TO BE MODIFIED WHILE WRITING THE METHOD
-     * Delete existing Bid from the table bidlist
+    /**
+     * Delete existing trade from the table trade
      * Add Flash Attribute with success message
-     * Add attribute BidList to the model, containing all Bids available in DB
+     * Add attribute trade to the model, containing all trades available in DB
      *
      * @param id the int of the ID chosen by the user
      * @param model the Model Interface, to add attributes to it
      * @param ra the RedirectAttributes to redirect attributes in redirect
-     * @return a string to the address "bidList/list", returning the associated view,
+     * @return a string to the address "trade/list", returning the associated view,
      * with attributes
      */
     @Override
     @GetMapping("/trade/delete/{id}")
-    public String deleteTrade(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Trade by Id and delete the Trade, return to Trade list
+    public String deleteTrade(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
+        try {
+            if (tradeService.checkIfTradeIdExists(id) == false) {
+                logger.info("GET /trade/delete : Non existent id");
+                return "redirect:/trade/list";
+            }
+            tradeService.deleteTradeById(id);
+            model.addAttribute("trade", tradeService.getAllTrades());
+            ra.addFlashAttribute("successDeleteMessage", "This trade was successfully deleted");
+
+            logger.info("/trade/delete : OK");
+        } catch (Exception e) {
+            ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the trade");
+            logger.info("/trade/delete : NOK " + "Invalid trade ID " + id);
+        }
         return "redirect:/trade/list";
     }
 }

@@ -75,7 +75,7 @@ public class RuleNameController implements RuleNameControllerInterface {
     public String validate(@Valid @ModelAttribute("ruleName") RuleNameModel ruleName, BindingResult result,
                            Model model, RedirectAttributes ra) {
         if (!result.hasErrors()) {
-            // curvePoint.setCreationDate(ruleNameService.getTimestampForFieldCreationDate());
+
             ruleNameService.saveRuleName(ruleName);
             ra.addFlashAttribute("successSaveMessage", "Your rule name was successfully added");
             model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
@@ -101,11 +101,14 @@ public class RuleNameController implements RuleNameControllerInterface {
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
+            if (ruleNameService.checkIfIdExists(id) == false) {
+                logger.info("GET /ruleName/update : Non existent id");
+                return "redirect:/ruleName/list";
+            }
             model.addAttribute("ruleName", ruleNameService.getRuleNameById(id));
             logger.info("GET /ruleName/update : OK");
         } catch (Exception e) {
             logger.info("/ruleName/delete : NOK " + "Invalid rule name ID " + id);
-            throw new IllegalArgumentException("Invalid rule name ID " + id);
         }
         return "ruleName/update";
     }
@@ -127,6 +130,10 @@ public class RuleNameController implements RuleNameControllerInterface {
     public String updateRuleName(@PathVariable("id") int id,
                                  @Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
                                  BindingResult result, Model model, RedirectAttributes ra) {
+        if (ruleNameService.checkIfIdExists(id) == false) {
+            logger.info("GET /ruleName/update : Non existent id");
+            return "redirect:/ruleName/list";
+        }
         if (result.hasErrors()) {
             logger.info("POST /ruleName/update : NOK");
             return "/ruleName/list";
@@ -154,6 +161,10 @@ public class RuleNameController implements RuleNameControllerInterface {
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {
+            if (ruleNameService.checkIfIdExists(id) == false) {
+                logger.info("GET /ruleName/delete : Non existent id");
+                return "redirect:/ruleName/list";
+            }
             ruleNameService.deleteRuleNameById(id);
             model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
             ra.addFlashAttribute("successDeleteMessage", "This rule name was successfully deleted");
@@ -162,7 +173,6 @@ public class RuleNameController implements RuleNameControllerInterface {
         } catch (Exception e) {
             ra.addFlashAttribute("errorDeleteMessage", "Error during deletion of the rule name");
             logger.info("/ruleName/delete : NOK " + "Invalid rule name ID " + id);
-            throw new IllegalArgumentException("Invalid rule name ID " + id);
         }
         return "redirect:/ruleName/list";
     }

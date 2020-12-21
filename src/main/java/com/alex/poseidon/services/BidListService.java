@@ -17,12 +17,12 @@ public class BidListService {
         this.bidListRep = bidListRep;
     }
 
-    public boolean checkIfBidListIdExists(int bidListId) {
-        return bidListRep.existsById(bidListId);
-    }
-    
     public List<BidListModel> getAllBids() {
         return bidListRep.findAll();
+    }
+
+    public boolean checkIfIdExists(int id) {
+        return bidListRep.existsById(id);
     }
 
     public void saveBid(BidListModel bidList) {

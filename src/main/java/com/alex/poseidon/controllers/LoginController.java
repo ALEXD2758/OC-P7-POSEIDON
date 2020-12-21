@@ -29,21 +29,6 @@ public class LoginController implements LoginControllerInterface {
     }
 
     /**
-     * Render the ModelAndView user/list
-     * Add an Object attribute with all users found in table user
-     *
-     * @return a model and view "user/list"
-     */
-    @Override
-    @GetMapping("secure/article-details")
-    public ModelAndView getAllUserArticles() {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("users", userRepository.findAll());
-        mav.setViewName("user/list");
-        return mav;
-    }
-
-    /**
      * Render the ModelAndView 403
      * Add an Object attribute with an error message
      *

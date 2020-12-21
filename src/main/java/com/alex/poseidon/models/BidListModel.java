@@ -1,11 +1,17 @@
 package com.alex.poseidon.models;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "bidlist")
@@ -31,48 +37,54 @@ public class BidListModel {
     private double bid;
     @Column(name = "ask")
     private double ask;
-    @Size(max=125, message = "The size of benchmark must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "benchmark")
     private String benchmark;
-    @FutureOrPresent(message = "The bid list date should be a date in the future or now")
+    @FutureOrPresent(message = "The date should be a date in the future or now")
     @Column(name = "bid_list_date")
-    private Timestamp bidListDate;
-    @Size(max=125, message = "The size of commentary must be of maximum 125 characters")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime bidListDate;
+    @Size(max=125)
     @Column(name = "commentary")
     private String commentary;
-    @Size(max=125, message = "The size of security must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "security")
     private String security;
-    @Size(max=125, message = "The size of status must be of maximum 10 characters")
+    @Size(max=10)
     @Column(name = "status")
     private String status;
-    @Size(max=125, message = "The size of trader must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "trader")
     private String trader;
-    @Size(max=125, message = "The size of book must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "book")
     private String book;
-    @Size(max=125, message = "The size of the created name must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "creation_name")
     private String creationName;
     @Column(name = "creation_date")
-    private Timestamp creationDate;
-    @Size(max=125, message = "The size of the revision name must be of maximum 125 characters")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime creationDate;
+    @Size(max=125)
     @Column(name = "revision_name")
     private String revisionName;
-    @FutureOrPresent(message = "The revision date should be a date in the future or now")
+    @FutureOrPresent(message = "The date should be a date in the future or now")
     @Column(name = "revision_date")
-    private Timestamp revisionDate;
-    @Size(max=125, message = "The size of the deal name must be of maximum 125 characters")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    private LocalDateTime revisionDate;
+    @Size(max=125)
     @Column(name = "deal_name")
     private String dealName;
-    @Size(max=125, message = "The size of the deal type must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "deal_type")
     private String dealType;
-    @Size(max=125, message = "The size of the source list Id must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "source_list_id")
     private String sourceListId;
-    @Size(max=125, message = "The size of side must be of maximum 125 characters")
+    @Size(max=125)
     @Column(name = "side")
     private String side;
 
@@ -140,11 +152,11 @@ public class BidListModel {
         this.benchmark = benchmark;
     }
 
-    public Timestamp getBidListDate() {
+    public LocalDateTime getBidListDate() {
         return bidListDate;
     }
 
-    public void setBidListDate(Timestamp bidListDate) {
+    public void setBidListDate(LocalDateTime bidListDate) {
         this.bidListDate = bidListDate;
     }
 
@@ -196,11 +208,11 @@ public class BidListModel {
         this.creationName = creationName;
     }
 
-    public Timestamp getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -212,11 +224,11 @@ public class BidListModel {
         this.revisionName = revisionName;
     }
 
-    public Timestamp getRevisionDate() {
+    public LocalDateTime getRevisionDate() {
         return revisionDate;
     }
 
-    public void setRevisionDate(Timestamp revisionDate) {
+    public void setRevisionDate(LocalDateTime revisionDate) {
         this.revisionDate = revisionDate;
     }
 

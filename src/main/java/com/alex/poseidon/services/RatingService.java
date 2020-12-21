@@ -1,6 +1,8 @@
 package com.alex.poseidon.services;
 
+import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.models.RatingModel;
+import com.alex.poseidon.repositories.CurvePointRepository;
 import com.alex.poseidon.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,12 @@ public class RatingService {
         this.ratingRep = ratingRep;
     }
 
-    public boolean checkIfRatingIdExists(int id) {
-        return ratingRep.existsById(id);
-    }
-    
     public List<RatingModel> getAllRatings() {
         return ratingRep.findAll();
+    }
+
+    public boolean checkIfIdExists(int id) {
+        return ratingRep.existsById(id);
     }
 
     public void saveRating(RatingModel rating) {

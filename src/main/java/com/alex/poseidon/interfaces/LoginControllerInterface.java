@@ -7,9 +7,6 @@ public interface LoginControllerInterface {
     @GetMapping("login")
     ModelAndView login();
 
-    @GetMapping("secure/article-details")
-    ModelAndView getAllUserArticles();
-
     @GetMapping("error")
     ModelAndView error();
 }

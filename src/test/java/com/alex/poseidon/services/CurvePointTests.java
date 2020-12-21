@@ -2,6 +2,7 @@ package com.alex.poseidon.services;
 
 import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.repositories.CurvePointRepository;
+import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class CurvePointTests {
     @Test
     public void saveUpdateFindDeleteShouldPerformTheirActionsAndSucceed() {
         long millis=System.currentTimeMillis();
-        java.util.Date date = new java.util.Date(2024/01/01);
+        LocalDateTime date = new LocalDateTime(2024/01/01);
 
         CurvePointModel curvePoint = new CurvePointModel();
         curvePoint.setId(10);
