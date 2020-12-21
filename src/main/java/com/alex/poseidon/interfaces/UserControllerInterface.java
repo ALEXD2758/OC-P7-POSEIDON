@@ -3,10 +3,8 @@ package com.alex.poseidon.interfaces;
 import com.alex.poseidon.models.UserModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -15,18 +13,19 @@ public interface UserControllerInterface {
     String home(Model model);
 
     @GetMapping("/user/add")
-    String addUser(UserModel bid);
+    String addUser(Model model);
 
     @PostMapping("/user/validate")
-    String validate(@Valid UserModel user, BindingResult result, Model model);
+    String validate(@Valid @ModelAttribute("user") UserModel user, BindingResult result, Model model
+            , RedirectAttributes ra);
 
     @GetMapping("/user/update/{id}")
-    String showUpdateForm(@PathVariable("id") Integer id, Model model);
+    String showUpdateForm(@PathVariable("id") int id, Model model);
 
     @PostMapping("/user/update/{id}")
-    String updateUser(@PathVariable("id") Integer id, @Valid UserModel user,
-                      BindingResult result, Model model);
+    String updateUser(@PathVariable("id") int id, @Valid @ModelAttribute("user") UserModel user,
+                      BindingResult result, Model model, RedirectAttributes ra);
 
     @GetMapping("/user/delete/{id}")
-    String deleteUser(@PathVariable("id") Integer id, Model model);
+    String deleteUser(@PathVariable("id") int id, Model model, RedirectAttributes ra);
 }

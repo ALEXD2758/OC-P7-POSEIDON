@@ -19,20 +19,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     UserService userService;
- 
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        if(s.equals("admin")) {
-        	UserModel personToLogin = userService.getUserByEmail(s);
+        UserModel personToLogin = userService.getUserByEmail(s);
+        if(personToLogin.getRole().equals("ADMIN")) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
             return new User(personToLogin.getUsername(), personToLogin.getPassword(), grantedAuthorities);
         }
         else {
-            UserModel personToLogin = userService.getUserByEmail(s);
             grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
             return new User(personToLogin.getUsername(), personToLogin.getPassword(), grantedAuthorities);
-        } 
+        }
     }
 }

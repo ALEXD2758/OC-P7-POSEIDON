@@ -189,7 +189,7 @@ public class UserControllerITTest {
                 .param("nonHashedPassword", "Admininistrator12@%*")
                 .param("fullname", "Alexandre Dubois")
                 .param("role", "ADMIN"))
-        //3. Assert
+                //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/list"))
                 .andExpect(flash().attributeExists("successUpdateMessage"))

@@ -11,5 +11,9 @@ public interface UserRepository extends JpaRepository<UserModel, Integer>, JpaSp
 
     UserModel findByUsername(String username);
 
+    boolean existsByUsername(String username);
+
     List<UserModel> findAll();
+
+    UserModel findById(int id);
 }

@@ -31,21 +31,24 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     //Function configuring the HttpSecurity, the different permissions and defaultUrl
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                //.csrf()
-                //.disable()
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/", "/login").permitAll()
+                .antMatchers("/user/*").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                  //  .loginPage("/login")
-                    .defaultSuccessUrl("/trade/list", true).
-                 and()
-                 	.logout()
-                 	.invalidateHttpSession(true)
-                 	.deleteCookies("JSESSIONID")
-                    .permitAll();
+                .formLogin()
+                .defaultSuccessUrl("/default", true).
+                and()
+                .logout()
+                .logoutUrl("/app-logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/app/error");
+
     }
 
     //Method for encoding the password used during the authentication
@@ -60,6 +63,5 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
 
         return new Pbkdf2PasswordEncoder();
-    }   
-
+    }
 }
