@@ -65,7 +65,7 @@ public class RuleNameControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/ruleName/list"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("ruleName/list"))
                 .andExpect(model().attributeExists("ruleName"))
@@ -80,7 +80,7 @@ public class RuleNameControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/ruleName/add"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("ruleName/add"))
                 .andExpect(model().attributeExists("ruleName"))
@@ -117,7 +117,7 @@ public class RuleNameControllerITTest {
                 .param("id", "1")
                 .param("name", "Rule Name")
                 .param("Description", "Description"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/ruleName/list"))
                 .andExpect(flash().attributeExists("successSaveMessage"))
@@ -148,7 +148,7 @@ public class RuleNameControllerITTest {
                 .getRuleNameById(rule.getId());
         //2. Act
         mockMvc.perform(get("/ruleName/update/{id}", "1"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("ruleName/update"))
                 .andExpect(model().attributeExists("ruleName"))
@@ -229,7 +229,7 @@ public class RuleNameControllerITTest {
         //2. Act
         mockMvc.perform(get("/ruleName/delete/{id}", "1")
                 .flashAttr("successDeleteMessage", "Your rule name was successfully deleted"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/ruleName/list"))
                 .andExpect(flash().attributeExists("successDeleteMessage"))

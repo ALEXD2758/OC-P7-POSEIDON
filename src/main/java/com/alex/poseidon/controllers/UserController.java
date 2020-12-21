@@ -2,14 +2,11 @@ package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.config.ValidPassword;
 import com.alex.poseidon.interfaces.UserControllerInterface;
-import com.alex.poseidon.models.RuleNameModel;
 import com.alex.poseidon.models.UserModel;
-import com.alex.poseidon.repositories.UserRepository;
 import com.alex.poseidon.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,8 +81,8 @@ public class UserController implements UserControllerInterface {
     @Override
     @RolesAllowed("ADMIN")
     @PostMapping("/user/validate")
-    public String validate(@Valid @ValidPassword @ModelAttribute("user") UserModel user, BindingResult result, Model model
-            , RedirectAttributes ra) {
+    public String validate(@Valid @ValidPassword @ModelAttribute("user") UserModel user, BindingResult result,
+                           Model model, RedirectAttributes ra) {
         if (userService.checkIfUserExistsByUsername(user.getUsername())) {
             ra.addFlashAttribute("ErrorUserExistantMessage", "The user is already registered");
             return "redirect:/user/add";

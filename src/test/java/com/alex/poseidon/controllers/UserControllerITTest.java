@@ -63,7 +63,7 @@ public class UserControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/user/list"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("user/list"))
                 .andExpect(model().attributeExists("users"))
@@ -78,7 +78,7 @@ public class UserControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/user/add"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("user/add"))
                 .andExpect(model().attributeExists("user"))
@@ -108,7 +108,7 @@ public class UserControllerITTest {
                 .when(userService)
                 .getAllUsers();
 
-//
+
         //2. Act
         mockMvc.perform(post("/user/validate")
                 .flashAttr("successSaveMessage", "Your user was successfully added")
@@ -117,7 +117,7 @@ public class UserControllerITTest {
                 .param("nonHashedPassword", "Admininistrator12@%*")
                 .param("fullname", "Alexandre Dubois")
                 .param("role", "ADMIN"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/list"))
                 .andExpect(flash().attributeExists("successSaveMessage"))
@@ -146,7 +146,7 @@ public class UserControllerITTest {
                 .getUserById(user.getId());
         //2. Act
         mockMvc.perform(get("/user/update/{id}", "1"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("user/update"))
                 .andExpect(model().attributeExists("user"))
@@ -189,7 +189,7 @@ public class UserControllerITTest {
                 .param("nonHashedPassword", "Admininistrator12@%*")
                 .param("fullname", "Alexandre Dubois")
                 .param("role", "ADMIN"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/list"))
                 .andExpect(flash().attributeExists("successUpdateMessage"))
@@ -226,7 +226,7 @@ public class UserControllerITTest {
         //2. Act
         mockMvc.perform(get("/user/delete/{id}", "1")
                 .flashAttr("successDeleteMessage", "Your user was successfully deleted"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/user/list"))
                 .andExpect(flash().attributeExists("successDeleteMessage"))

@@ -2,7 +2,6 @@ package com.alex.poseidon.services;
 
 import com.alex.poseidon.models.TradeModel;
 import com.alex.poseidon.repositories.TradeRepository;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;

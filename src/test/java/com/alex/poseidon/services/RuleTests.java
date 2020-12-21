@@ -1,6 +1,5 @@
 package com.alex.poseidon.services;
 
-import com.alex.poseidon.models.RatingModel;
 import com.alex.poseidon.models.RuleNameModel;
 import com.alex.poseidon.repositories.RuleNameRepository;
 import org.junit.Assert;

@@ -63,7 +63,7 @@ public class RatingControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/rating/list"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("rating/list"))
                 .andExpect(model().attributeExists("rating"))
@@ -78,7 +78,7 @@ public class RatingControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/rating/add"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("rating/add"))
                 .andExpect(model().attributeExists("rating"))
@@ -115,7 +115,7 @@ public class RatingControllerITTest {
                 .param("sandPRating", "Sand PRating")
                 .param("fitchRating", "Fitch Rating")
                 .param("orderNumber", "10"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/rating/list"))
                 .andExpect(flash().attributeExists("successSaveMessage"))
@@ -144,7 +144,7 @@ public class RatingControllerITTest {
                 .getRatingById(rating.getId());
         //2. Act
         mockMvc.perform(get("/rating/update/{id}", "1"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("rating/update"))
                 .andExpect(model().attributeExists("rating"))
@@ -187,7 +187,7 @@ public class RatingControllerITTest {
                 .param("sandPRating", "Sand PRating")
                 .param("fitchRating", "Fitch Rating")
                 .param("orderNumber", "10"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/rating/list"))
                 .andExpect(flash().attributeExists("successUpdateMessage"))
@@ -224,7 +224,7 @@ public class RatingControllerITTest {
         //2. Act
         mockMvc.perform(get("/rating/delete/{id}", "1")
                 .flashAttr("successDeleteMessage", "Your rating was successfully deleted"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/rating/list"))
                 .andExpect(flash().attributeExists("successDeleteMessage"))
