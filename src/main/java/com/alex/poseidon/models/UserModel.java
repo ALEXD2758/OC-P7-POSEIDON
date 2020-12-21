@@ -1,5 +1,7 @@
 package com.alex.poseidon.models;
 
+import com.alex.poseidon.config.ValidPassword;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -10,12 +12,14 @@ public class UserModel {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private int id;
     @Column(name = "username")
     @NotBlank(message = "Username is mandatory")
     private String username;
-    @Column(name = "password")
+    @ValidPassword
     @NotBlank(message = "Password is mandatory")
+    private String nonHashedPassword;
+    @Column(name = "password")
     private String password;
     @Column(name = "fullname")
     @NotBlank(message = "FullName is mandatory")
@@ -24,11 +28,11 @@ public class UserModel {
     @NotBlank(message = "Role is mandatory")
     private String role;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -38,6 +42,14 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getNonHashedPassword() {
+        return nonHashedPassword;
+    }
+
+    public void setNonHashedPassword(String nonHashedPassword) {
+        this.nonHashedPassword = nonHashedPassword;
     }
 
     public String getPassword() {
