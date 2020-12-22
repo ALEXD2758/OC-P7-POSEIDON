@@ -69,7 +69,7 @@ public class TradeControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/trade/list"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("trade/list"))
                 .andExpect(model().attributeExists("trade"))
@@ -84,7 +84,7 @@ public class TradeControllerITTest {
 
         //2. Act
         mockMvc.perform(get("/trade/add"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("trade/add"))
                 .andExpect(model().attributeExists("trade"))
@@ -131,7 +131,7 @@ public class TradeControllerITTest {
                 .param("creationName", "Creation Name")
                 .param("tradeDate", "2024-01-02T07:21")
                 .param("creationDate", "2024-01-02T07:21"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/trade/list"))
                 .andExpect(flash().attributeExists("successSaveMessage"))
@@ -165,7 +165,7 @@ public class TradeControllerITTest {
                 .getTradeById(trade.getTradeId());
         //2. Act
         mockMvc.perform(get("/trade/update/{id}", "28"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("trade/update"))
                 .andExpect(model().attributeExists("trade"))
@@ -256,7 +256,7 @@ public class TradeControllerITTest {
         //2. Act
         mockMvc.perform(get("/trade/delete/{id}", "28")
                 .flashAttr("successDeleteMessage", "Your trade was successfully deleted"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/trade/list"))
                 .andExpect(flash().attributeExists("successDeleteMessage"))
@@ -292,7 +292,7 @@ public class TradeControllerITTest {
                 .getAllTrades();
         //2. Act
         mockMvc.perform(get("/trade/delete/{id}", "1"))
-                //3. Assert
+        //3. Assert
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/trade/list"))
                 .andReturn();

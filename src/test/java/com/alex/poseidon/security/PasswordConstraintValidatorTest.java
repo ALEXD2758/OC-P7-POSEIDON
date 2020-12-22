@@ -1,6 +1,5 @@
 package com.alex.poseidon.security;
 
-
 import com.alex.poseidon.config.PasswordConstraintValidator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

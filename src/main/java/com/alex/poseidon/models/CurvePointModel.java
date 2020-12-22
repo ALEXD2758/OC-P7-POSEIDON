@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-
 @Entity
 @Table(name = "curvepoint")
 public class CurvePointModel {

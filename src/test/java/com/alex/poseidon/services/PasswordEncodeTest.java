@@ -1,4 +1,4 @@
-/*package com.alex.poseidon.services;
+package com.alex.poseidon.services;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * Email: khang.nguyen@banvien.com
  * Date: 09/03/2019
  * Time: 11:26 AM
+**/
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,4 +23,3 @@ public class PasswordEncodeTest {
         System.out.println("[ "+ pw + " ]");
     }
 }
-*/
