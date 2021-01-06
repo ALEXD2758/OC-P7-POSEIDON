@@ -20,6 +20,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserService userService;
 
+    /**
+     * Load a user by username with specific authorities depending on its role
+     * @Override of method loadUserByUserName from UserDetailsService
+     * @param s the username equals the user email address
+     * @return UserDetails model including username (e-mail address), password and authority)
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();

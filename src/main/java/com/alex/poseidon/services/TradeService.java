@@ -18,22 +18,46 @@ public class TradeService {
         this.tradeRep = tradeRep;
     }
 
+    /**
+     *  Check if an Id already exists
+     * @param id the trade ID
+     * @return true if ID already exists
+     * @return false if ID doesn't exist
+     */
     public boolean checkIfTradeIdExists(int id) {
         return tradeRep.existsById(id);
     }
 
+    /**
+     * Get a list of all trades
+     *
+     * @return list of TradeModel containing all trade models
+     */
     public List<TradeModel> getAllTrades() {
         return tradeRep.findAll();
     }
 
+    /**
+     * Save a new trade in the DB
+     * @param trade the TradeModel to save
+     */
     public void saveTrade(TradeModel trade) {
         tradeRep.save(trade);
     }
 
+    /**
+     * Delete an existent trade from the DB
+     * @param id the trade ID
+     */
     public void deleteTradeById(int id) {
         tradeRep.deleteById(id);
     }
 
+    /**
+     * Get a trade model by ID
+     * @param id the trade ID
+     * @return TradeModel found with the ID
+     */
     public TradeModel getTradeById(int id) {
         return tradeRep.findById(id);
     }
