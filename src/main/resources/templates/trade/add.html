@@ -35,25 +35,25 @@
 			<div class="form-group">
 				<label for="buyQuantity" class="col-sm-2 control-label">Buy Quantity</label>
 				<div class="col-sm-10">
-					<input type="text" th:field="*{buyQuantity}" id="buyQuantity" placeholder="BuyQuantity" class="col-4">
+					<input type="number" th:field="*{buyQuantity}" id="buyQuantity" placeholder="BuyQuantity" class="col-4">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="sellQuantity" class="col-sm-2 control-label">Sell Quantity</label>
 				<div class="col-sm-10">
-					<input type="text" th:field="*{sellQuantity}" id="sellQuantity" placeholder="SellQuantity" class="col-4">
+					<input type="number" th:field="*{sellQuantity}" id="sellQuantity" placeholder="SellQuantity" class="col-4">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="buyPrice" class="col-sm-2 control-label">Buy Price</label>
 				<div class="col-sm-10">
-					<input type="text" th:field="*{buyPrice}" id="buyPrice" placeholder="BuyPrice" class="col-4">
+					<input type="number" th:field="*{buyPrice}" id="buyPrice" placeholder="BuyPrice" class="col-4">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="sellPrice" class="col-sm-2 control-label">Sell Price</label>
 				<div class="col-sm-10">
-					<input type="text" th:field="*{sellPrice}" id="sellPrice" placeholder="SellPrice" class="col-4">
+					<input type="number" th:field="*{sellPrice}" id="sellPrice" placeholder="SellPrice" class="col-4">
 				</div>
 			</div>
 			<div class="form-group">
@@ -101,7 +101,7 @@
 			<div class="form-group">
 				<label for="creationDate" class="col-sm-2 control-label">Creation Date</label>
 				<div class="col-sm-10">
-					<input type="date" name="creationDate" id="creationDate" th:value="${#dates.format(creationDate, 'yyyy-MM-dd')}" placeholder="CreationDate" class="col-4">
+					<input type="datetime-local" name="creationDate" id="creationDate" th:field="*{creationDate}" placeholder="CreationDate" class="col-4">
 				</div>
 			</div>
 			<div class="form-group">

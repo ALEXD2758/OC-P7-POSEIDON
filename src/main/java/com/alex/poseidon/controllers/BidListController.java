@@ -1,6 +1,5 @@
 package com.alex.poseidon.controllers;
 
-import com.alex.poseidon.interfaces.BidListControllerInterface;
 import com.alex.poseidon.models.BidListModel;
 import com.alex.poseidon.services.BidListService;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,7 @@ import javax.validation.Valid;
 
 
 @Controller
-public class BidListController implements BidListControllerInterface {
+public class BidListController {
     private static final Logger logger = LogManager.getLogger("BidListController");
 
     @Autowired
@@ -33,7 +32,7 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/list", returning the associated view
      * with attribute
      */
-    @Override
+
     @GetMapping("/bidList/list")
     public String home(Model model) {
         model.addAttribute("bidList", bidListService.getAllBids());
@@ -49,7 +48,6 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/add", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/bidList/add")
     public String addBidForm(Model model) {
         model.addAttribute("bidList", new BidListModel());
@@ -71,7 +69,6 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @PostMapping("/bidList/validate")
     public String validate(@Valid @ModelAttribute("bidList") BidListModel bidList, BindingResult result, Model model,
                            RedirectAttributes ra) {
@@ -96,7 +93,6 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
@@ -124,7 +120,6 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/list", returning the associated view,
      * with attributes
      */
-    @Override
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") int id, @Valid @ModelAttribute("bidList") BidListModel bidList,
                             BindingResult result, Model model, RedirectAttributes ra) {
@@ -154,7 +149,6 @@ public class BidListController implements BidListControllerInterface {
      * @return a string to the address "bidList/list", returning the associated view,
      * with attributes
      */
-    @Override
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {

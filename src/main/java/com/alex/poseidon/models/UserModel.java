@@ -11,11 +11,12 @@ public class UserModel {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     @Column(name = "username")
     @NotBlank(message = "Username is mandatory")
     private String username;
+    @Transient
     @ValidPassword
     @NotBlank(message = "Password is mandatory")
     private String nonHashedPassword;

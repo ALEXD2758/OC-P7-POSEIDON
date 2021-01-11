@@ -1,6 +1,5 @@
 package com.alex.poseidon.controllers;
 
-import com.alex.poseidon.interfaces.CurveControllerInterface;
 import com.alex.poseidon.models.CurvePointModel;
 import com.alex.poseidon.services.CurvePointService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-public class CurveController implements CurveControllerInterface {
+public class CurveController {
 
     private static final Logger logger = LogManager.getLogger("CurveController");
 
@@ -33,7 +32,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/list", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/curvePoint/list")
     public String home(Model model) {
         model.addAttribute("curvePoint", curvePointService.getAllCurvePoints());
@@ -49,7 +47,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/add", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/curvePoint/add")
     public String addCurvePointForm(Model model) {
         model.addAttribute("curvePoint", new CurvePointModel());
@@ -71,7 +68,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint, BindingResult result,
                            Model model, RedirectAttributes ra) {
@@ -98,7 +94,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
@@ -126,7 +121,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/list", returning the associated view,
      * with attributes
      */
-    @Override
     @PostMapping("/curvePoint/update/{id}")
     public String updateCurvePoint(@PathVariable("id") int id,
                                    @Valid @ModelAttribute("curvePoint") CurvePointModel curvePoint,
@@ -159,7 +153,6 @@ public class CurveController implements CurveControllerInterface {
      * @return a string to the address "curvePoint/list", returning the associated view,
      * with attributes
      */
-    @Override
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteCurvePoint(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {

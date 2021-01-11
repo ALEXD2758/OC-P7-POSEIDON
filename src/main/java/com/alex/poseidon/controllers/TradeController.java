@@ -1,6 +1,5 @@
 package com.alex.poseidon.controllers;
 
-import com.alex.poseidon.interfaces.TradeControllerInterface;
 import com.alex.poseidon.models.TradeModel;
 import com.alex.poseidon.services.TradeService;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-public class TradeController implements TradeControllerInterface {
+public class TradeController {
 
     private static final Logger logger = LogManager.getLogger("TradeController");
 
@@ -34,7 +33,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/list", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/trade/list")
     public String home(Model model) {
         model.addAttribute("trade", tradeService.getAllTrades());
@@ -50,7 +48,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/add", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/trade/add")
     public String addTradeForm(Model model) {
         LocalDateTime dateDebut = tradeService.getCreationDateForDateFields();
@@ -76,7 +73,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @PostMapping("/trade/validate")
     public String validate(@Valid @ModelAttribute("trade") TradeModel trade, BindingResult result, Model model
             , RedirectAttributes ra) {
@@ -102,7 +98,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
@@ -130,7 +125,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/list", returning the associated view,
      * with attributes
      */
-    @Override
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") int id, @Valid @ModelAttribute("trade") TradeModel trade,
                               BindingResult result, Model model, RedirectAttributes ra) {
@@ -161,7 +155,6 @@ public class TradeController implements TradeControllerInterface {
      * @return a string to the address "trade/list", returning the associated view,
      * with attributes
      */
-    @Override
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {

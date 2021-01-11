@@ -1,6 +1,5 @@
 package com.alex.poseidon.controllers;
 
-import com.alex.poseidon.interfaces.RuleNameControllerInterface;
 import com.alex.poseidon.models.RuleNameModel;
 import com.alex.poseidon.services.RuleNameService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-public class RuleNameController implements RuleNameControllerInterface {
+public class RuleNameController {
 
     private static final Logger logger = LogManager.getLogger("RuleNameController");
 
@@ -33,7 +32,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/list", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/ruleName/list")
     public String home(Model model) {
         model.addAttribute("ruleName", ruleNameService.getAllRuleNames());
@@ -49,7 +47,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/add", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/ruleName/add")
     public String addRuleForm(Model model) {
         model.addAttribute("ruleName", new RuleNameModel());
@@ -71,7 +68,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @PostMapping("/ruleName/validate")
     public String validate(@Valid @ModelAttribute("ruleName") RuleNameModel ruleName, BindingResult result,
                            Model model, RedirectAttributes ra) {
@@ -98,7 +94,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
@@ -126,7 +121,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/list", returning the associated view,
      * with attributes
      */
-    @Override
     @PostMapping("/ruleName/update/{id}")
     public String updateRuleName(@PathVariable("id") int id,
                                  @Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
@@ -158,7 +152,6 @@ public class RuleNameController implements RuleNameControllerInterface {
      * @return a string to the address "ruleName/list", returning the associated view,
      * with attributes
      */
-    @Override
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {

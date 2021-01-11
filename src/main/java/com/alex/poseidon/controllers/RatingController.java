@@ -1,6 +1,5 @@
 package com.alex.poseidon.controllers;
 
-import com.alex.poseidon.interfaces.RatingControllerInterface;
 import com.alex.poseidon.models.RatingModel;
 import com.alex.poseidon.services.RatingService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-public class RatingController implements RatingControllerInterface {
+public class RatingController {
 
     private static final Logger logger = LogManager.getLogger("RatingController");
 
@@ -32,7 +31,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/list", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/rating/list")
     public String home(Model model) {
         model.addAttribute("rating", ratingService.getAllRatings());
@@ -48,7 +46,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/add", returning the associated view
      * with attribute
      */
-    @Override
     @GetMapping("/rating/add")
     public String addRatingForm(Model model) {
         model.addAttribute("rating", new RatingModel());
@@ -70,7 +67,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @PostMapping("/rating/validate")
     public String validate(@Valid @ModelAttribute("rating") RatingModel rating, BindingResult result, Model model,
                            RedirectAttributes ra) {
@@ -96,7 +92,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         try {
@@ -124,7 +119,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/list", returning the associated view,
      * with attributes
      */
-    @Override
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") int id,
                                @Valid @ModelAttribute("rating") RatingModel rating,
@@ -156,7 +150,6 @@ public class RatingController implements RatingControllerInterface {
      * @return a string to the address "rating/list", returning the associated view,
      * with attributes
      */
-    @Override
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         try {

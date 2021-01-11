@@ -1,7 +1,6 @@
 package com.alex.poseidon.controllers;
 
 import com.alex.poseidon.config.ValidPassword;
-import com.alex.poseidon.interfaces.UserControllerInterface;
 import com.alex.poseidon.models.UserModel;
 import com.alex.poseidon.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @Controller
-public class UserController implements UserControllerInterface {
+public class UserController {
 
 
     private static final Logger logger = LogManager.getLogger("UserController");
@@ -35,8 +34,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/list", returning the associated view
      * with attribute
      */
-
-    @Override
     @RolesAllowed("ADMIN")
     @RequestMapping("/user/list")
     public String home(Model model) {
@@ -54,7 +51,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/add", returning the associated view
      * with attribute
      */
-    @Override
     @RolesAllowed("ADMIN")
     @GetMapping("/user/add")
     public String addUser(Model model) {
@@ -78,7 +74,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/add", returning the associated view,
      *  if there is an error in BindingResult
      */
-    @Override
     @RolesAllowed("ADMIN")
     @PostMapping("/user/validate")
     public String validate(@Valid @ValidPassword @ModelAttribute("user") UserModel user, BindingResult result,
@@ -92,10 +87,12 @@ public class UserController implements UserControllerInterface {
             Pbkdf2PasswordEncoder encoder = new Pbkdf2PasswordEncoder();
             user.setPassword(encoder.encode(password));
 
+
             userService.saveUser(user);
             ra.addFlashAttribute("successSaveMessage", "The user was successfully added");
             model.addAttribute("users", userService.getAllUsers());
 
+            user.setNonHashedPassword("");
             logger.info("POST /user/validate : OK");
             return "redirect:/user/list";
         }
@@ -114,7 +111,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/update", returning the associated view
      * with attribute (if no Exception)
      */
-    @Override
     @RolesAllowed("ADMIN")
     @GetMapping("/user/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
@@ -145,7 +141,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/list", returning the associated view,
      * with attributes
      */
-    @Override
     @RolesAllowed("ADMIN")
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid @ModelAttribute("user") UserModel user,
@@ -183,7 +178,6 @@ public class UserController implements UserControllerInterface {
      * @return a string to the address "user/list", returning the associated view,
      * with attributes
      */
-    @Override
     @RolesAllowed("ADMIN")
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
